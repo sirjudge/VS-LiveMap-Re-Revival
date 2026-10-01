@@ -64,42 +64,44 @@
         <Reference Include="VSSurvivalMod">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSSurvivalMod.dll</HintPath>
         </Reference>
+        <None Update="modinfo.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
-    <!-- <Target Name="InstallAndRunNpm" AfterTargets="PostBuildEvent"> -->
-    <!--     <Exec Command="npm install" WorkingDirectory="web" /> -->
-    <!--     <Exec Command="npm run build" WorkingDirectory="web" /> -->
-    <!-- </Target> -->
-    <!---->
+    <Target Name="InstallAndRunNpm" AfterTargets="PostBuildEvent">
+        <Exec Command="npm install" WorkingDirectory="../web" />
+        <Exec Command="npm run build" WorkingDirectory="../web" />
+    </Target>
     <!-- <Target Name="CopyWebDir" AfterTargets="InstallAndRunNpm"> -->
-    <!--     <ItemGroup> -->
-    <!--         <_CopyWebStuffs Include="web/public/**/*.*" Exclude="web/public/tiles/**/*;web/public/data/**" /> -->
-    <!--         <_CopyWebStuffs Include="web/dist/**/*.*" /> -->
-    <!--     </ItemGroup> -->
-    <!--     <Copy SourceFiles="@(_CopyWebStuffs)" DestinationFolder="$(TargetDir)/assets/LiveMap/config/%(RecursiveDir)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Retries="3" RetryDelayMilliseconds="300" /> -->
-    <!-- </Target> -->
-    <!---->
-    <!-- <Target Name="FilterModInfo" AfterTargets="CopyWebDir"> -->
-    <!--     <PropertyGroup> -->
-    <!--         <ModInfoJson>$(TargetDir)/modinfo.json</ModInfoJson> -->
-    <!--     </PropertyGroup> -->
-    <!--     <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(ModInfoJson)) -->
-    <!--         .Replace('{version}','$(Version)') -->
-    <!--         .Replace('{description}','$(Description)') -->
-    <!--         )" File="$(ModInfoJson)" Overwrite="true" Encoding="UTF-8" /> -->
-    <!-- </Target> -->
-    <!---->
-    <!-- <Target Name="FilterIndexHtml" AfterTargets="FilterModInfo"> -->
-    <!--     <PropertyGroup> -->
-    <!--         <IndexHTML>$(TargetDir)/assets/LiveMap/config/index.html</IndexHTML> -->
-    <!--     </PropertyGroup> -->
-    <!--     <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(IndexHTML)) -->
-    <!--         .Replace('{description}','$(Description)') -->
-    <!--         )" File="$(IndexHTML)" Overwrite="true" Encoding="UTF-8" /> -->
-    <!-- </Target> -->
-    <!---->
-    <!-- <Target Name="Package" AfterTargets="FilterIndexHtml"> -->
-    <!--     <ZipDirectory DestinationFile="bin/$(TargetName).zip" SourceDirectory="$(TargetDir)" Overwrite="true" /> -->
-    <!-- </Target> -->
-
+    <Target Name="CopyWebDir" AfterTargets="PostBuildEvent">
+        <ItemGroup>
+            <_CopyWebStuffs Include="../web/public/**/*.*" Exclude="../web/public/tiles/**/*;../web/public/data/**" />
+            <_CopyWebStuffs Include="../web/dist/**/*.*" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(_CopyWebStuffs)"
+            DestinationFolder="$(TargetDir)/assets/LiveMap/config/%(RecursiveDir)"
+            SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Retries="3" RetryDelayMilliseconds="300" />
+    </Target>
+    <Target Name="FilterModInfo" AfterTargets="CopyWebDir">
+        <PropertyGroup>
+            <ModInfoJson>$(TargetDir)/modinfo.json</ModInfoJson>
+        </PropertyGroup>
+        <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(ModInfoJson))
+            .Replace('{version}','$(Version)')
+            .Replace('{description}','$(Description)')
+            )" File="$(ModInfoJson)" Overwrite="true" Encoding="UTF-8" />
+    </Target>
+    <Target Name="FilterIndexHtml" AfterTargets="FilterModInfo">
+        <PropertyGroup>
+            <IndexHTML>$(TargetDir)/assets/LiveMap/config/index.html</IndexHTML>
+        </PropertyGroup>
+        <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(IndexHTML))
+            .Replace('{description}','$(Description)')
+            )" File="$(IndexHTML)" Overwrite="true" Encoding="UTF-8" />
+    </Target>
+    <Target Name="Package" AfterTargets="FilterIndexHtml">
+        <ZipDirectory DestinationFile="bin/$(TargetName).zip" SourceDirectory="$(TargetDir)" Overwrite="true" />
+    </Target>
 </Project>

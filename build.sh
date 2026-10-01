@@ -3,8 +3,10 @@
 
 set -e
 
+#TODO: Need to update this
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
+# PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
+PROJECT_FILE="$PROJECT_ROOT/livemap.csproj"
 
 # Default values
 CONFIGURATION="Release"

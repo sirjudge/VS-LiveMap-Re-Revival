@@ -1,0 +1,16 @@
+{
+  "type": "code",
+  "name": "LiveMap",
+  "modid": "livemap",
+  "version": "0.2.0",
+  "description": "LiveMap is a browser-based world map viewer for Vintage Story",
+  "authors": [
+    "BillyGalbreath",
+    "mja00",
+    "SirJudge"
+  ],
+  "requiredOnClient": false,
+  "dependencies": {
+    "game": "1.21.6"
+  }
+}

@@ -33,7 +33,7 @@
         <Compile Remove="tests\**" />
         <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.7.0" IncludeAssets="compile" PrivateAssets="all" />
         <!-- <None Include="LICENSE;README.md;resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" /> -->
-        <None Include="resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" />
         <Reference Include="0Harmony">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\0Harmony.dll</HintPath>
           <Private>False</Private>

@@ -4,9 +4,9 @@ using System.Net;
 using System.Reflection;
 using LiveMap.Configuration;
 using LiveMap.Data;
-using LiveMap.Layer.marker;
-using LiveMap.Layer.marker.options;
-using LiveMap.Layer.marker.options.type;
+using LiveMap.Layer.Marker;
+using LiveMap.Layer.Marker.Options;
+using LiveMap.Layer.Marker.Options.type;
 using LiveMap.Util;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
@@ -30,7 +30,7 @@ public class VSCartographerLayer : Layer {
         }
     }
 
-    public override List<Marker> Markers {
+    public override List<Marker.Marker> Markers {
         get {
             if (!_isModInstalled || _sharedLayer == null || _waypointsField == null) {
                 return [];
@@ -43,7 +43,7 @@ public class VSCartographerLayer : Layer {
                     return [];
                 }
 
-                List<Marker> markers = [];
+                List<Marker.Marker> markers = [];
 
                 foreach (DictionaryEntry entry in dict) {
                     if (entry.Value is IEnumerable waypointList) {
@@ -53,7 +53,7 @@ public class VSCartographerLayer : Layer {
                                 continue;
                             }
 
-                            Marker? marker = ConvertWaypointToMarker(waypoint);
+                            Marker.Marker? marker = ConvertWaypointToMarker(waypoint);
                             if (marker != null) {
                                 markers.Add(marker);
                             }

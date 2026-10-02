@@ -1,5 +1,5 @@
-using LiveMap.Layer.marker.options;
-using LiveMap.Layer.marker.options.type;
+using LiveMap.Layer.Marker.Options;
+using LiveMap.Layer.Marker.Options.type;
 using Point = LiveMap.Data.Point;
 
 namespace LiveMap.Configuration;

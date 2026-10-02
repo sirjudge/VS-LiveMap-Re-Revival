@@ -1,7 +1,7 @@
 using LiveMap.Util;
 using Vintagestory.API.Common;
 
-namespace LiveMap.Command.subcommand;
+namespace LiveMap.Mods.Subcommand;
 
 public class ReloadCmd(LiveMap server) : AbstractCommand(server, ["reload"]) {
     public override TextCommandResult Execute(TextCommandCallingArgs args) {

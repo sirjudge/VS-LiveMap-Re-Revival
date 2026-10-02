@@ -1,6 +1,6 @@
 using System.Reflection;
 using LiveMap.Data;
-using LiveMap.Layer.marker.options;
+using LiveMap.Layer.Marker.Options;
 using Newtonsoft.Json;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;

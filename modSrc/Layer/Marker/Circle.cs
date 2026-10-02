@@ -1,8 +1,8 @@
 using LiveMap.Data;
-using LiveMap.Layer.marker.options.type;
+using LiveMap.Layer.Marker.Options.type;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker;
+namespace LiveMap.Layer.Marker;
 
 /// <summary>
 ///     The circle marker is used to draw circle overlays on the map

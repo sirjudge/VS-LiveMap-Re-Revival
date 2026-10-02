@@ -1,6 +1,6 @@
 using LiveMap.Configuration;
-using LiveMap.Layer.marker;
-using LiveMap.Layer.marker.options;
+using LiveMap.Layer.Marker;
+using LiveMap.Layer.Marker.Options;
 using LiveMap.Util;
 
 namespace LiveMap.Layer.BuiltIn;
@@ -10,7 +10,7 @@ public class SpawnLayer() : Layer("spawn", !string.IsNullOrEmpty(Config.IconOpti
 
     public override bool? Hidden => !Config.DefaultShowLayer;
 
-    public override List<Marker> Markers {
+    public override List<Marker.Marker> Markers {
         get {
             TooltipOptions? tooltip = Config.Tooltip?.DeepCopy();
             if (tooltip?.Content != null) {

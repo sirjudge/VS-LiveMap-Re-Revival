@@ -1,7 +1,7 @@
 using LiveMap.Data;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker.options;
+namespace LiveMap.Layer.Marker.Options;
 
 /// <summary>
 ///     Optional settings for <see cref="TooltipOptions" /> and <see cref="PopupOptions" /> overlays

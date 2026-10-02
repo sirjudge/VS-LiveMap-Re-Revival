@@ -1,5 +1,4 @@
-using LiveMap.Layer.marker;
-using LiveMap.Layer.marker.options;
+using LiveMap.Layer.Marker.Options;
 using LiveMap.Registry;
 using LiveMap.Util;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ public abstract class Layer(string id, string label) : Keyed {
 
     [JsonProperty(Order = 11)] public virtual LayerOptions? Options { get; set; }
 
-    [JsonProperty(Order = 999)] public virtual List<Marker> Markers { get; } = [];
+    [JsonProperty(Order = 999)] public virtual List<Marker.Marker> Markers { get; } = [];
 
     /// <summary>
     ///     Custom CSS for this layer's map pane

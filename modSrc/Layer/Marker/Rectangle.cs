@@ -1,8 +1,8 @@
 using LiveMap.Data;
-using LiveMap.Layer.marker.options.type;
+using LiveMap.Layer.Marker.Options.type;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker;
+namespace LiveMap.Layer.Marker;
 
 /// <summary>
 ///     The rectangle marker is used to draw rectangle overlays on the map

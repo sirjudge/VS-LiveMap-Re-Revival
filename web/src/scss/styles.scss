@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Cousine&family=Inter&family=Poppins:wght@500;600&display=swap');
 
-@import 'contextmenu';
-@import 'livemap';
-@import 'notification';
-@import 'players';
-@import 'sidebar';
+// @import 'contextmenu';
+// @import 'livemap';
+// @import 'notification';
+// @import 'players';
+// @import 'sidebar';
+@use 'contextmenu';
+@use 'livemap';
+@use 'notification';
+@use 'players';
+@use 'sidebar';
+
+@import url('https://fonts.googleapis.com/css2?family=Cousine&family=Inter&family=Poppins:wght@500;600&display=swap');
+// @use url('https://fonts.googleapis.com/css2?family=Cousine&family=Inter&family=Poppins:wght@500;600&display=swap');
 
 * {
   margin: 0;

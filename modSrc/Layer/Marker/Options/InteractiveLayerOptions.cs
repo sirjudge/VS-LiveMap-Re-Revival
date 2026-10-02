@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker.options;
+namespace LiveMap.Layer.Marker.Options;
 
 /// <summary>
 ///     A set of options for an interactive overlay layer on the map<br />

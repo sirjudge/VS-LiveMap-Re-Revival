@@ -1,7 +1,7 @@
-using LiveMap.Command;
 using LiveMap.Configuration;
 using LiveMap.Data;
 using LiveMap.Httpd;
+using LiveMap.Mods;
 using LiveMap.Network;
 using LiveMap.Registry;
 using LiveMap.Task;

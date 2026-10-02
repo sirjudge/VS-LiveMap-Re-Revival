@@ -1,6 +1,5 @@
 using LiveMap.Configuration;
 using LiveMap.Data;
-using LiveMap.Layer.marker;
 using LiveMap.Util;
 using Newtonsoft.Json;
 using Vintagestory.API.Common;
@@ -14,7 +13,7 @@ public class PlayersLayer() : Layer("players", "lang.players".ToLang()) {
 
     public override bool? Hidden => !Config.DefaultShowLayer;
 
-    public override List<Marker> Markers { get; } = [];
+    public override List<Marker.Marker> Markers { get; } = [];
 
     public override string Filename => Path.Combine(Files.JsonDir, "players.json");
 

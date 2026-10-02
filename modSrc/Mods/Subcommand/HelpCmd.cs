@@ -2,7 +2,7 @@ using System.Text;
 using LiveMap.Util;
 using Vintagestory.API.Common;
 
-namespace LiveMap.Command.subcommand;
+namespace LiveMap.Mods.Subcommand;
 
 public class HelpCmd(LiveMap server) : AbstractCommand(server, ["help"]) {
     public override TextCommandResult Execute(TextCommandCallingArgs args) {

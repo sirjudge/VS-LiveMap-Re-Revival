@@ -1,8 +1,8 @@
 using LiveMap.Data;
-using LiveMap.Layer.marker.options.type;
+using LiveMap.Layer.Marker.Options.type;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker;
+namespace LiveMap.Layer.Marker;
 
 /// <summary>
 ///     The ellipse marker is used to draw ellipse overlays on the map

@@ -1,8 +1,8 @@
-using LiveMap.Layer.marker.options;
+using LiveMap.Layer.Marker.Options;
 using LiveMap.Util;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker;
+namespace LiveMap.Layer.Marker;
 
 /// <summary>
 ///     Represents a marker on the map

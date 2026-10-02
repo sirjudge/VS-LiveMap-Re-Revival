@@ -1,4 +1,4 @@
-using LiveMap.Command.Argument;
+using LiveMap.Mods.Argument;
 using LiveMap.Util;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -6,7 +6,7 @@ using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.Common.Database;
 
-namespace LiveMap.Command.subcommand;
+namespace LiveMap.Mods.Subcommand;
 
 public class ApothemRenderCmd(LiveMap server) : AbstractCommand(server,
     ["apothemrender", "radiusrender", "rangerender"],

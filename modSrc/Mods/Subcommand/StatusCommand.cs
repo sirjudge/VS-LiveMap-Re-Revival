@@ -1,9 +1,9 @@
 using LiveMap.Util;
 using Vintagestory.API.Common;
 
-namespace LiveMap.Command.subcommand;
+namespace LiveMap.Mods.Subcommand;
 
-public class StatusCmd(LiveMap server) : AbstractCommand(server, ["status", "progress"]) {
+public class StatusCommand(LiveMap server) : AbstractCommand(server, ["status", "progress"]) {
     public override TextCommandResult Execute(TextCommandCallingArgs args) {
         (int buffer, int process) = _server.RenderTaskManager?.GetCounts() ?? (0, 0);
         return process == 0 ? "status.idle".CommandSuccess(buffer) : "status.running".CommandSuccess(process);

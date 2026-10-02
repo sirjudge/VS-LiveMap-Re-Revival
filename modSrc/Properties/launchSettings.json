@@ -3,14 +3,14 @@
     "Client": {
       "commandName": "Executable",
       "executablePath": "dotnet",
-      "commandLineArgs": "\"$(VINTAGE_STORY)/Vintagestory.dll\" --dataPath \"$(VINTAGE_STORY_DATA)\" --addModPath \"$(ProjectDir)/bin/mods\" \"$(VINTAGE_STORY_DATA)/Mods\"",
-      "workingDirectory": "$(VINTAGE_STORY)"
+      "commandLineArgs": "\"/opt/vintagestory/Vintagestory.dll\" --dataPath \"/home/nico/.config/VintagestoryData/Mods\" --addModPath \"$(ProjectDir)/bin/mods\" \"/home/nico/.config/VintagestoryData/Mods\"",
+      "workingDirectory": "/opt/vintagestory"
     },
     "Server": {
       "commandName": "Executable",
       "executablePath": "dotnet",
-      "commandLineArgs": "\"$(VINTAGE_STORY)/VintagestoryServer.dll\" --dataPath \"$(VINTAGE_STORY_DATA)\" --addModPath \"$(ProjectDir)/bin/mods\" \"$(VINTAGE_STORY_DATA)/Mods\"",
-      "workingDirectory": "$(VINTAGE_STORY)"
+      "commandLineArgs": "\"/opt/vintagestory/VintagestoryServer.dll\" --dataPath \"/home/nico/.config/VintagestoryData/Mods\" --addModPath \"$(ProjectDir)/bin/mods\" \"/home/nico/.config/VintagestoryData/Mods\"",
+      "workingDirectory": "/opt/vintagestory"
     }
   }
 }

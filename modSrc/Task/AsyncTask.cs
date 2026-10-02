@@ -17,7 +17,7 @@ public abstract class AsyncTask(LiveMap server) {
             _running = true;
             await TickAsync(_cts.Token);
         } catch (Exception e) {
-            Logger.Error(e.ToString());
+            Logger.Error($"Error: {e} trace: {e.StackTrace}");
         } finally {
             _running = false;
         }

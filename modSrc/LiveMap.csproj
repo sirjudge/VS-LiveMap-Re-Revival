@@ -36,44 +36,49 @@
         <None Include="resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" />
         <Reference Include="0Harmony">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\0Harmony.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Microsoft.Data.Sqlite">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\Microsoft.Data.Sqlite.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json">
-          <HintPath>..\..\..\..\.nuget\packages\newtonsoft.json\13.0.3\lib\net6.0\Newtonsoft.Json.dll</HintPath>
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\Newtonsoft.Json.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="protobuf-net">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\protobuf-net.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="SkiaSharp">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\SkiaSharp.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="VintagestoryAPI">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\VintagestoryAPI.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="VintagestoryLib">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\VintagestoryLib.dll</HintPath>
-        </Reference>
-        <Reference Include="VSCreativeMod">
-          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSCreativeMod.dll</HintPath>
-        </Reference>
-        <Reference Include="VSEssentials">
-          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSEssentials.dll</HintPath>
-        </Reference>
-        <Reference Include="VSSurvivalMod">
-          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSSurvivalMod.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <None Update="modinfo.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <Reference Include="VSEssentials">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSEssentials.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="VSSurvivalMod">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSSurvivalMod.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
     </ItemGroup>
 
     <Target Name="InstallAndRunNpm" AfterTargets="PostBuildEvent">
         <Exec Command="npm install" WorkingDirectory="../web" />
         <Exec Command="npm run build" WorkingDirectory="../web" />
     </Target>
-    <!-- <Target Name="CopyWebDir" AfterTargets="InstallAndRunNpm"> -->
     <Target Name="CopyWebDir" AfterTargets="PostBuildEvent">
         <ItemGroup>
             <_CopyWebStuffs Include="../web/public/**/*.*" Exclude="../web/public/tiles/**/*;../web/public/data/**" />
@@ -81,7 +86,7 @@
         </ItemGroup>
         <Copy
             SourceFiles="@(_CopyWebStuffs)"
-            DestinationFolder="$(TargetDir)/assets/LiveMap/config/%(RecursiveDir)"
+            DestinationFolder="$(TargetDir)/assets/livemap/config/%(RecursiveDir)"
             SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Retries="3" RetryDelayMilliseconds="300" />
     </Target>
     <Target Name="FilterModInfo" AfterTargets="CopyWebDir">
@@ -95,7 +100,7 @@
     </Target>
     <Target Name="FilterIndexHtml" AfterTargets="FilterModInfo">
         <PropertyGroup>
-            <IndexHTML>$(TargetDir)/assets/LiveMap/config/index.html</IndexHTML>
+            <IndexHTML>$(TargetDir)/assets/livemap/config/index.html</IndexHTML>
         </PropertyGroup>
         <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(IndexHTML))
             .Replace('{description}','$(Description)')

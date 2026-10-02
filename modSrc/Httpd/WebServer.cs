@@ -139,6 +139,8 @@ public partial class WebServer(LiveMap server) {
                 CachedFile? cachedFile;
 
                 if (isTile) {
+                    Logger.Info($"Identified tile file for path:{filePath}");
+
                     // Try to get from cache first (only for tiles)
                     cachedFile = GetCachedFile(filePath);
 

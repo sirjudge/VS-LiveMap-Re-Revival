@@ -1,7 +1,7 @@
 using LiveMap.Util;
 using Vintagestory.API.Common;
 
-namespace LiveMap.Command;
+namespace LiveMap.Mods;
 
 public abstract class AbstractCommand {
     public readonly ICommandArgumentParser[] ArgParsers;

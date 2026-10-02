@@ -1,9 +1,9 @@
-using LiveMap.Command.subcommand;
+using LiveMap.Mods.Subcommand;
 using LiveMap.Util;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
-namespace LiveMap.Command;
+namespace LiveMap.Mods;
 
 public class CommandHandler {
     private readonly IChatCommand _chatCommand;
@@ -25,7 +25,7 @@ public class CommandHandler {
         RegisterSubCommand(new FullRenderCmd(server));
         RegisterSubCommand(new ApothemRenderCmd(server));
         RegisterSubCommand(new ReloadCmd(server));
-        RegisterSubCommand(new StatusCmd(server));
+        RegisterSubCommand(new StatusCommand(server));
     }
 
     public IEnumerable<AbstractCommand> Commands => _commands;

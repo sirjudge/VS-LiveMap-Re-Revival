@@ -2,8 +2,7 @@ using LiveMap.Util;
 using Vintagestory.API.Common;
 using Vintagestory.Common.Database;
 
-
-namespace LiveMap.Command.subcommand;
+namespace LiveMap.Mods.Subcommand;
 
 public class FullRenderCmd(LiveMap server) : AbstractCommand(server, ["fullrender"]) {
     public override TextCommandResult Execute(TextCommandCallingArgs args) {

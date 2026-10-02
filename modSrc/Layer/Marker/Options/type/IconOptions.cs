@@ -1,7 +1,7 @@
 using LiveMap.Data;
 using Newtonsoft.Json;
 
-namespace LiveMap.Layer.marker.options.type;
+namespace LiveMap.Layer.Marker.Options.type;
 
 /// <summary>
 ///     Optional settings for the <see cref="Icon" /> marker

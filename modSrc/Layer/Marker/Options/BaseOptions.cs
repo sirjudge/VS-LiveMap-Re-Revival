@@ -1,4 +1,4 @@
-namespace LiveMap.Layer.marker.options;
+namespace LiveMap.Layer.Marker.Options;
 
 /// <summary>
 ///     A set of base options for markers and overlays<br />

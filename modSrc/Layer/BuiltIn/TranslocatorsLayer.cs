@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
 using LiveMap.Configuration;
 using LiveMap.Data;
-using LiveMap.Layer.marker;
-using LiveMap.Layer.marker.options;
+using LiveMap.Layer.Marker;
+using LiveMap.Layer.Marker.Options;
 using LiveMap.Util;
 using Newtonsoft.Json;
 using Vintagestory.API.MathTools;
@@ -36,9 +36,9 @@ public class TranslocatorsLayer : Layer {
 
     public override bool? Hidden => !Config.DefaultShowLayer;
 
-    public override List<Marker> Markers {
+    public override List<Marker.Marker> Markers {
         get {
-            List<Marker> list = [];
+            List<Marker.Marker> list = [];
             Point spawnPos = LiveMap.Api.Sapi.World.DefaultSpawnPosition.ToPoint();
             _knownTranslocators.Values.Foreach(translocators => translocators.Foreach(translocator => {
                 // Convert to relative coordinates (relative to spawn) for display

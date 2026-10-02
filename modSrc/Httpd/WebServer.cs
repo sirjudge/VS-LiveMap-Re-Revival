@@ -1,7 +1,8 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
+//TODO: don't think I need this
+// using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using GenHTTP.Api.Content;
 using GenHTTP.Api.Content.IO;
@@ -141,8 +142,6 @@ public partial class WebServer(LiveMap server) {
                 CachedFile? cachedFile;
 
                 if (isTile) {
-                    Logger.Info($"Identified tile file for path:{filePath}");
-
                     // Try to get from cache first (only for tiles)
                     cachedFile = GetCachedFile(filePath);
 

@@ -7,24 +7,21 @@ public class SepiaRenderer() : Renderer("sepia") {
     public static byte GetIndex(int id) => LiveMap.Api.SepiaColors.Block2Color[id];
     public static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
 
+    //TODO: This gets the wrong color for the water
     public static uint GetColor(int index) {
         if (index <= 0) {
-            Logger.Warn("color ocean");
             GetColor("ocean");
         }
 
         if (index < LiveMap.Api.SepiaColors.ColorsByCode.Count) {
-            Logger.Warn("index less than color codes setting to index");
             return LiveMap.Api.SepiaColors.ColorsByCode.GetAt(index).Value;
         }
 
-        Logger.Warn("yoloing the ocean color");
         return GetColor("ocean");
     }
 
     public override void ProcessBlockData(int regionX, int regionZ, BlockData blockData) {
         if (TileImage == null) {
-            Logger.Warn("Tile image is null womp womp");
             return;
         }
 
@@ -40,7 +37,6 @@ public class SepiaRenderer() : Renderer("sepia") {
             for (int z = 0; z < TileConstants.RegionSize; z++) {
                 BlockData.Data? block = blockData.Get(x, z);
                 if (block == null) {
-                    Logger.Warn("Block data is null when trying to extract row cache");
                     currentRowCache[z] = null;
                     continue;
                 }

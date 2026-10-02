@@ -3,7 +3,8 @@ MOD_OUTPUT_PATH ?= '~/.config/VintagestoryData/Mods/'
 
 clean:
 	dotnet clean modSrc/
-	rm -r modSrc/runData
+	rm -f modSrc/runData
+	rm -f ./modSrc/bin/LiveMap*
 
 build-prod:
 	./build.sh -c release

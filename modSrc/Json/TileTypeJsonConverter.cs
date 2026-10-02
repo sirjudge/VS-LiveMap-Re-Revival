@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using LiveMap.Tile;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,10 +21,11 @@ public class TileTypeJsonConverter : JsonConverter {
         }
 
         string? str = JToken.Load(reader).ToObject<string>();
-        return str is null ? null :
-            TileType.Types.TryGetValue(str, out var tileTypeString) ?
-                null :
-                tileTypeString;
+        if (str is null) {
+            return null;
+        }
+
+        return TileType.Types.GetValueOrDefault(str);
     }
 
     public override bool CanConvert(Type type) => type.GetElementType() == typeof(string);

@@ -13,6 +13,8 @@ using LiveMap.Util;
 
 namespace LiveMap.Httpd;
 
+//TODO: LITERALLY ALL OF THIS NEEDS TO BE AUDITED
+// I SEE REGEX AND IT MAKES ME SCARED
 public partial class WebServer(LiveMap server) {
     // Cache configuration
     private const long _maxCacheSizeBytes = 100 * 1024 * 1024; // 100MB

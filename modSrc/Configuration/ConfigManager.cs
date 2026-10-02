@@ -16,7 +16,15 @@ public sealed class ConfigManager : IDisposable {
 
     public Config Config { get; private set; } = null!;
 
-    public void Load() => Config = _server.Sapi.LoadModConfig<Config>($"{_server.ModId}.json") ?? new Config();
+    public void Load() {
+        string modJsonPath = $"{_server.ModId}.json";
+        Config? loadedConfig = _server.Sapi.LoadModConfig<Config>(modJsonPath);
+        if (loadedConfig is null) {
+            Logger.Warn("config json was unable to be loaded so default configuration will be used instead");
+            loadedConfig = new Config();
+        }
+        Config = loadedConfig;
+    }
 
     public void Save() {
         _fileWatcher.IgnoreChanges = true;
@@ -34,7 +42,6 @@ public sealed class ConfigManager : IDisposable {
         Save();
     }
 
-    public void Dispose() {
+    public void Dispose() =>
         _fileWatcher.Dispose();
-    }
 }

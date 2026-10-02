@@ -116,6 +116,10 @@ public sealed class Colormap {
                 }
             }
 
+            if (json is null) {
+                throw new ArgumentException("Expected to read all text from json file but found nothing");
+            }
+
             if (Deserialize(json)) {
                 RefreshIds(world);
                 Logger.Info($"Colormap loaded from disk ({Path.GetFileName(path)})");

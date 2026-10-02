@@ -20,7 +20,7 @@ public sealed class SettingsTask(LiveMap server) : AsyncTask(server) {
         // Always write on first run or if registries are populated but settings.json might be stale
         bool shouldUpdate = _lastUpdate == 0 ||
                            (now - _lastUpdate >= _interval) ||
-                           !System.IO.File.Exists(System.IO.Path.Combine(Files.JsonDir, "settings.json"));
+                           !File.Exists(Path.Combine(Files.JsonDir, "settings.json"));
 
         if (!shouldUpdate) {
             return;
@@ -36,8 +36,13 @@ public sealed class SettingsTask(LiveMap server) : AsyncTask(server) {
         dict.TryAdd("interval", _interval);
         dict.TryAdd("size", _server.Sapi.WorldManager.Size());
         dict.TryAdd("spawn", _server.Sapi.World.DefaultSpawnPosition.ToPoint());
-        string tileTypeThing = _server.Config.Web.TileType.Type;
-        dict.TryAdd("web", new Dictionary<string, object?> { { "tiletype", tileTypeThing } });
+        try {
+            string tileTypeThing = _server.Config.Web.TileType.Type;
+            dict.TryAdd("web", new Dictionary<string, object?> { { "tiletype", tileTypeThing } });
+        }
+        catch(Exception ex){
+            Logger.Error($"{ex.Message} {ex.StackTrace}");
+        }
         dict.TryAdd("zoom", new Dictionary<string, object?> { { "def", _server.Config.Zoom.Default }, { "maxin", _server.Config.Zoom.MaxIn }, { "maxout", _server.Config.Zoom.MaxOut } });
         dict.TryAdd("renderers", Renderers(cancellationToken));
         dict.TryAdd("ui", new Dictionary<string, object?> {

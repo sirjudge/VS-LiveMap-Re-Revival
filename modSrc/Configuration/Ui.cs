@@ -1,6 +1,7 @@
 namespace LiveMap.Configuration;
 
 public class Ui {
+    //TODO: These need to be updated
     public string Attribution { get; set; } = "<a href='https://mods.vintagestory.at/vslivemaprevival' target='_blank'>Livemap</a>";
 
     public string LogoLink { get; set; } = "https://mods.vintagestory.at/vslivemaprevival";
@@ -9,7 +10,7 @@ public class Ui {
 
     public string LogoText { get; set; } = "LiveMap";
 
-    public string SiteTitle { get; set; } = "Vintage Story LiveMap";
+    public string SiteTitle { get; set; } = "Vintage Story LiveMap Re-Revival";
 
     public string Sidebar { get; set; } = "unpinned";
 }

@@ -23,23 +23,30 @@ public sealed class LiveMap {
         Sapi = api;
         _mod = mod;
 
+        ConfigManager = new ConfigManager(this);
+
+        Logger.Debug("Live Map constructor initializing");
         Files.SavegameIdentifier = Sapi.World.SavegameIdentifier;
         GamePaths.EnsurePathExists(GamePaths.ModConfig);
         GamePaths.EnsurePathExists(Files.DataDir);
 
-        ConfigManager = new ConfigManager(this);
+        Logger.Debug("loading configuration manager and reloading map");
         Reload();
 
+        Logger.Debug("Extracting web files");
         Files.ExtractWebFiles(this);
 
+        Logger.Debug("initializing colors");
         Colormap = new Colormap();
         SepiaColors = new SepiaColors(this);
 
+        Logger.Debug("registering command handler");
         CommandHandler = new CommandHandler(this);
 
         LayerRegistry = [];
         RendererRegistry = [];
 
+        Logger.Debug("initializing task managers and web server");
         AsyncTaskManager = new AsyncTaskManager(this);
         RenderTaskManager = new RenderTaskManager(this);
         WebServer = new WebServer(this);

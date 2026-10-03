@@ -3,12 +3,11 @@ using LiveMap.Util;
 namespace LiveMap.Render;
 
 public class SepiaRenderer() : Renderer("sepia") {
-    public static bool IsWater(int? id) => id == null || LiveMap.Api.SepiaColors.BlockIsWater[(int)id];
-    public static byte GetIndex(int id) => LiveMap.Api.SepiaColors.Block2Color[id];
-    public static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
+    private static bool IsWater(int? id) => id == null || LiveMap.Api.SepiaColors.BlockIsWater[(int)id];
+    private static byte GetIndex(int id) => LiveMap.Api.SepiaColors.Block2Color[id];
+    private static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
 
-    //TODO: This gets the wrong color for the water
-    public static uint GetColor(int index) {
+    private static uint GetColor(int index) {
         if (index <= 0) {
             GetColor("ocean");
         }
@@ -20,6 +19,7 @@ public class SepiaRenderer() : Renderer("sepia") {
         return GetColor("ocean");
     }
 
+    //TODO: think something is wonky with my water coloring
     public override void ProcessBlockData(int regionX, int regionZ, BlockData blockData) {
         if (TileImage == null) {
             return;

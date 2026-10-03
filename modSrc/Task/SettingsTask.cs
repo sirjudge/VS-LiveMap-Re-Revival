@@ -36,13 +36,7 @@ public sealed class SettingsTask(LiveMap server) : AsyncTask(server) {
         dict.TryAdd("interval", _interval);
         dict.TryAdd("size", _server.Sapi.WorldManager.Size());
         dict.TryAdd("spawn", _server.Sapi.World.DefaultSpawnPosition.ToPoint());
-        try {
-            string tileTypeThing = _server.Config.Web.TileType.Type;
-            dict.TryAdd("web", new Dictionary<string, object?> { { "tiletype", tileTypeThing } });
-        }
-        catch(Exception ex){
-            Logger.Error($"{ex.Message} {ex.StackTrace}");
-        }
+        dict.TryAdd("web", new Dictionary<string, object?> { { "tiletype", _server.Config.Web.TileType.Type } });
         dict.TryAdd("zoom", new Dictionary<string, object?> { { "def", _server.Config.Zoom.Default }, { "maxin", _server.Config.Zoom.MaxIn }, { "maxout", _server.Config.Zoom.MaxOut } });
         dict.TryAdd("renderers", Renderers(cancellationToken));
         dict.TryAdd("ui", new Dictionary<string, object?> {

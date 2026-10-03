@@ -139,18 +139,22 @@ public sealed class LiveMapClient {
         try {
             foreach (Block block in player.World.Blocks.Where(block => block.Code != null)) {
                 uint baseColor;
-                if (block is BlockRequireSolidGround) {
-                    baseColor = Color.Reverse((uint)_api.BlockTextureAtlas.GetAverageColor(block.TextureSubIdForBlockColor));
-                } else if (block is BlockPlant) {
-                    Block? tallGrassBlock = _api.World.GetBlock(new AssetLocation("game:tallgrass-tall-free"));
-                    if (tallGrassBlock != null) {
-                        baseColor = Color.Reverse((uint)tallGrassBlock.GetColor(_api, _overridePos));
-                    } else {
-                        //TODO: Compiler complaining no null check here, now made null check to come back later
-                        throw new ArgumentException("Expected tallgrass block to not be null but was null instead");
+                switch (block)
+                {
+                    case BlockRequireSolidGround:
+                        baseColor = Color.Reverse((uint)_api.BlockTextureAtlas.GetAverageColor(block.TextureSubIdForBlockColor));
+                        break;
+                    case BlockPlant:
+                    {
+                        Block? tallGrassBlock = _api.World.GetBlock(new AssetLocation("game:tallgrass-tall-free"));
+                        baseColor = tallGrassBlock is null?
+                            throw new ArgumentException("Expected tallgrass block to not be null but was null instead"):
+                            Color.Reverse((uint)tallGrassBlock.GetColor(_api, _overridePos));
+                        break;
                     }
-                } else {
-                    baseColor = Color.Reverse((uint)block.GetColor(_api, _overridePos));
+                    default:
+                        baseColor = Color.Reverse((uint)block.GetColor(_api, _overridePos));
+                        break;
                 }
 
                 uint[] colors = new uint[30];
@@ -169,14 +173,12 @@ public sealed class LiveMapClient {
         return colormap;
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public static bool PreYearRel(IGameCalendar __instance, ref float __result) {
+    public static bool PreYearRel(IGameCalendar instance, ref float result) {
         if (_overrideMonth == null) {
             return true;
         }
 
-        __result = _overrideMonth.Value;
+        result = _overrideMonth.Value;
         return false;
     }
 

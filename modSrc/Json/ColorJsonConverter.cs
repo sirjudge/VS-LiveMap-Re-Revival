@@ -19,15 +19,11 @@ public class ColorJsonConverter : JsonConverter {
 
     /// <inheritdoc />
     public override object? ReadJson(JsonReader reader, Type type, object? existingValue, JsonSerializer serializer) {
-        if (reader.TokenType == JsonToken.String) {
-            return (Color)JToken.Load(reader).ToObject<string>()!;
-        }
-
-        if (reader.TokenType != JsonToken.Integer) {
-            return null;
-        }
-
-        return (Color)JToken.Load(reader).ToObject<uint>();
+        return reader.TokenType switch {
+            JsonToken.String => (Color)JToken.Load(reader).ToObject<string>()!,
+            not JsonToken.Integer => (object?)null,
+            _ => (Color)JToken.Load(reader).ToObject<uint>()
+        };
     }
 
     /// <inheritdoc />

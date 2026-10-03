@@ -41,7 +41,7 @@ public sealed class Colormap {
         }
     }
 
-    public bool Deserialize(string? json) {
+    private bool Deserialize(string? json) {
         lock (_lock) {
             _colorsByName.Clear();
 
@@ -129,7 +129,7 @@ public sealed class Colormap {
         });
     }
 
-    public async System.Threading.Tasks.Task SaveToDisk(int month = -1) {
+    private async System.Threading.Tasks.Task SaveToDisk(int month = -1) {
         string path = month > 0 ? Files.GetColormapFile(month) : Files.ColormapFile;
         string data = Serialize(); // Serialize before acquiring global file lock to minimize file system lock duration
 
@@ -141,7 +141,7 @@ public sealed class Colormap {
         }
     }
 
-    public void RefreshIds(IWorldAccessor world) {
+    private void RefreshIds(IWorldAccessor world) {
         lock (_lock) {
             _colorsById.Clear();
 

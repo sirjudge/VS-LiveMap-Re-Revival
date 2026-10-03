@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
-# Build script for LiveMap mod
 
 set -e
 
-#TODO: Need to update this
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/modSrc"
-# PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
 PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
 
 # Default values

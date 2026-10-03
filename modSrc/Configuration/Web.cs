@@ -9,12 +9,12 @@ public class Web {
 
     public string Url { get; set; } = "http://localhost:8080";
 
-    public bool ReadOnly { get; set; } = false;
+    public bool ReadOnly { get; set; }
 
     [JsonConverter(typeof(TileTypeJsonConverter))]
     public TileType TileType { get; set; } = TileType.Webp;
 
     public int TileQuality { get; set; } = 100;
 
-    public bool FriendlyUrls { get; set; } = false;
+    public bool FriendlyUrls { get; set; }
 }

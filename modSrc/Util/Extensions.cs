@@ -13,13 +13,17 @@ using Vintagestory.GameContent;
 
 namespace LiveMap.Util;
 
-public static class Extensions {
+public static class Extensions
+{
     private const BindingFlags _flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-    public static T? GetField<T>(this object obj, string name) where T : class => obj.GetType().GetField(name, _flags)?.GetValue(obj) as T;
+    public static T? GetField<T>(this object obj, string name)
+        where T : class => obj.GetType().GetField(name, _flags)?.GetValue(obj) as T;
 
-    public static void AddIfNotExists<T>(this List<T> list, T value) {
-        if (!list.Contains(value)) {
+    public static void AddIfNotExists<T>(this List<T> list, T value)
+    {
+        if (!list.Contains(value))
+        {
             list.Add(value);
         }
     }
@@ -30,7 +34,8 @@ public static class Extensions {
 
     public static TextCommandResult CommandSuccess(this string key, params object[]? args) => TextCommandResult.Success($"command.{key}".ToLang(args));
 
-    public static Point GetPoint(this IPlayer player) {
+    public static Point GetPoint(this IPlayer player)
+    {
         EntityPos pos = player.Entity.Pos;
         return new Point(pos.X, pos.Z);
     }
@@ -47,32 +52,50 @@ public static class Extensions {
 
     public static void UnregisterCommand(this IChatCommandApi api, string name) => ((ChatCommandApi)api).GetType().GetMethod("UnregisterCommand", _flags)?.Invoke(api, [name]);
 
-    public static void AutoSaveNow(this ICoreServerAPI api) {
-        api.Event.RegisterCallback(_ => {
-            IChatCommand command = api.ChatCommands.Get("autosavenow");
-            command.Execute(new TextCommandCallingArgs {
-                LanguageCode = Lang.CurrentLocale,
-                Command = command,
-                SubCmdCode = "autosavenow",
-                Caller = new Caller { Type = EnumCallerType.Console, CallerPrivileges = ["*"], CallerRole = "admin", FromChatGroupId = 0 },
-                RawArgs = new CmdArgs("")
-            });
-        }, 1);
+    public static void AutoSaveNow(this ICoreServerAPI api)
+    {
+        api.Event.RegisterCallback(
+            _ =>
+            {
+                IChatCommand command = api.ChatCommands.Get("autosavenow");
+                command.Execute(
+                    new TextCommandCallingArgs
+                    {
+                        LanguageCode = Lang.CurrentLocale,
+                        Command = command,
+                        SubCmdCode = "autosavenow",
+                        Caller = new Caller
+                        {
+                            Type = EnumCallerType.Console,
+                            CallerPrivileges = ["*"],
+                            CallerRole = "admin",
+                            FromChatGroupId = 0,
+                        },
+                        RawArgs = new CmdArgs(""),
+                    }
+                );
+            },
+            1
+        );
     }
 
-    public static T DeepCopy<T>(this T self) where T : BaseOptions => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(self))!;
+    public static T DeepCopy<T>(this T self)
+        where T : BaseOptions => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(self))!;
 
-    public static Dictionary<string, object> GetHealth(this IPlayer player) {
+    public static Dictionary<string, object> GetHealth(this IPlayer player)
+    {
         EntityBehaviorHealth? health = player.Entity.GetBehavior<EntityBehaviorHealth>();
         return new Dictionary<string, object> { { "cur", health?.Health ?? 15 }, { "max", health?.MaxHealth ?? 15 } };
     }
 
-    public static Dictionary<string, object> GetSatiety(this IPlayer player) {
+    public static Dictionary<string, object> GetSatiety(this IPlayer player)
+    {
         EntityBehaviorHunger? satiety = player.Entity.GetBehavior<EntityBehaviorHunger>();
         return new Dictionary<string, object> { { "cur", satiety?.Saturation ?? 1500 }, { "max", satiety?.MaxSaturation ?? 1500 } };
     }
 
-    public static string GetAvatar(this EntityPlayer player) {
+    public static string GetAvatar(this EntityPlayer player)
+    {
         ITreeAttribute appliedParts = (ITreeAttribute)player.WatchedAttributes.GetTreeAttribute("skinConfig")["appliedParts"];
         return $"https://vs.pl3x.net/v1/{appliedParts.GetString("baseskin")}/{appliedParts.GetString("eyecolor")}/{appliedParts.GetString("hairbase")}/{appliedParts.GetString("hairextra")}/{appliedParts.GetString("mustache")}/{appliedParts.GetString("beard")}/{appliedParts.GetString("haircolor")}.png";
     }

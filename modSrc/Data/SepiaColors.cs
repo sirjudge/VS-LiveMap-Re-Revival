@@ -42,7 +42,8 @@ public class SepiaColors {
         { "plant", "#808650" },
         { "lake", "#CCC890" },
         { "ocean", "#CCC890" },
-        { "glacier", "#E0E0C0" }
+        { "glacier", "#E0E0C0" },
+        { "unkown", "#FF1493" }
     };
 
     public OrderedDictionary<string, uint> ColorsByCode { get; } = [];
@@ -61,12 +62,10 @@ public class SepiaColors {
             EnumBlockMaterial.Plant => "plant",
             EnumBlockMaterial.Wood => "forest",
             EnumBlockMaterial.Snow => "glacier",
-            //TODO: This is what was before
-            //EnumBlockMaterial.Liquid => "lake",
-            //TODO: Changed to water?
             EnumBlockMaterial.Water => "lake",
             EnumBlockMaterial.Ice => "glacier",
             EnumBlockMaterial.Lava => "lava",
+            EnumBlockMaterial.Other => "unkown",
             _ => "land"
         };
     }

@@ -209,3 +209,4 @@ export class PlayersLayer extends MarkersLayer {
 		return `--amount:${amount}%;--segments:${segments}`;
 	}
 }
+

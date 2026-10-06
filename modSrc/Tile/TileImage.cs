@@ -9,7 +9,8 @@ using Vintagestory.GameContent;
 
 namespace LiveMap.Tile;
 
-public unsafe class TileImage {
+public unsafe class TileImage
+{
     private readonly SKBitmap _bitmap;
     private readonly byte* _bitmapPtr;
 
@@ -23,7 +24,8 @@ public unsafe class TileImage {
     private readonly HashSet<int> _changedZoomLevels = [];
     private readonly object _changeTrackingLock = new();
 
-    public TileImage(int regionX, int regionZ) {
+    public TileImage(int regionX, int regionZ)
+    {
         _bitmap = new SKBitmap(TileConstants.RegionSize, TileConstants.RegionSize);
         _bitmapPtr = (byte*)_bitmap.GetPixels().ToPointer();
         _shadowMap = new byte[TileConstants.RegionBlockCount].Fill((byte)128);
@@ -36,8 +38,10 @@ public unsafe class TileImage {
         _hasChanges = false;
     }
 
+    //TODO: Think something with the setBlockColor is causing the water to be borked in the client map?
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void SetBlockColor(int blockX, int blockZ, uint argb, float yDiff) {
+    public void SetBlockColor(int blockX, int blockZ, uint argb, float yDiff)
+    {
         int imgX = blockX & TileConstants.RegionMask;
         int imgZ = blockZ & TileConstants.RegionMask;
 
@@ -50,14 +54,18 @@ public unsafe class TileImage {
         _shadowMap[shadowIndex] = (byte)Math.Clamp(_shadowMap[shadowIndex] * yDiff, 0, 255);
 
         // Thread-safe change tracking: only update if not already marked as changed
-        if (!_hasChanges) {
-            lock (_changeTrackingLock) {
+        if (!_hasChanges)
+        {
+            lock (_changeTrackingLock)
+            {
                 // Double-check pattern: verify still unchanged after acquiring lock
-                if (!_hasChanges) {
+                if (!_hasChanges)
+                {
                     _hasChanges = true;
                     // When base tile (zoom 0) changes, all zoom levels need updating
                     // Mark all zoom levels as changed for incremental save tracking
-                    for (int zoom = 0; zoom <= _config.Zoom.MaxOut; zoom++) {
+                    for (int zoom = 0; zoom <= _config.Zoom.MaxOut; zoom++)
+                    {
                         _changedZoomLevels.Add(zoom);
                     }
                 }
@@ -65,10 +73,12 @@ public unsafe class TileImage {
         }
     }
 
-    public void CalculateShadows() {
+    public void CalculateShadows()
+    {
         byte[] shadowMapCopy = [.. _shadowMap];
         BlurTool.Blur(_shadowMap, TileConstants.RegionSize, TileConstants.RegionSize, 2);
-        for (int i = 0; i < _shadowMap.Length; i++) {
+        for (int i = 0; i < _shadowMap.Length; i++)
+        {
             float shadow = (int)(((_shadowMap[i] / 128F) - 1F) * 5F) / 5F;
             shadow += ((shadowMapCopy[i] / 128F) - 1F) * 5F % 1F / 5F;
 
@@ -80,14 +90,17 @@ public unsafe class TileImage {
         }
     }
 
-    public void Save(string rendererId) {
-        try {
+    public void Save(string rendererId)
+    {
+        try
+        {
             bool incrementalSaves = _config.Render.EnableIncrementalSaves;
 
             // Thread-safe check: capture current state atomically
             bool hasChanges;
             HashSet<int> changedZoomLevels;
-            lock (_changeTrackingLock) {
+            lock (_changeTrackingLock)
+            {
                 hasChanges = _hasChanges;
                 // Create a copy of changed zoom levels to avoid holding lock during I/O
                 changedZoomLevels = [.. _changedZoomLevels];
@@ -95,40 +108,48 @@ public unsafe class TileImage {
 
             // Skip entirely if no changes and incremental saves enabled
             // If _hasChanges is false, _changedZoomLevels should be empty (SetBlockColor sets both together)
-            if (incrementalSaves && !hasChanges) {
+            if (incrementalSaves && !hasChanges)
+            {
                 return;
             }
 
             // Higher zoom levels depend on lower ones (downsampling from base bitmap)
             // If any zoom level changes, all higher zoom levels must also be updated
             // Find the minimum changed zoom level to determine the update range
-            int minChangedZoom = incrementalSaves && changedZoomLevels.Count > 0
-                ? changedZoomLevels.Min()
-                : 0;
+            int minChangedZoom = incrementalSaves && changedZoomLevels.Count > 0 ? changedZoomLevels.Min() : 0;
 
-            for (int zoom = 0; zoom <= _config.Zoom.MaxOut; zoom++) {
+            for (int zoom = 0; zoom <= _config.Zoom.MaxOut; zoom++)
+            {
                 // Skip unchanged zoom levels when incremental saves enabled
                 // Update if this zoom level is >= the minimum changed zoom level
-                if (incrementalSaves && zoom > 0 && zoom < minChangedZoom) {
+                if (incrementalSaves && zoom > 0 && zoom < minChangedZoom)
+                {
                     continue;
                 }
 
                 FileInfo fileInfo = new(Path.Combine(Files.TilesDir, rendererId, zoom.ToString(), $"{_regionX >> zoom}_{_regionZ >> zoom}.{_config.Web.TileType.Type}"));
                 GamePaths.EnsurePathExists(fileInfo.Directory!.FullName);
 
-                if (zoom > 0) {
+                if (zoom > 0)
+                {
                     SKBitmap bitmap;
                     // Optimize: Use FileMode.Open if file exists, faster than OpenOrCreate
                     // Handle TOCTOU race condition: file may be deleted between Exists check and Open
-                    if (fileInfo.Exists) {
-                        try {
+                    if (fileInfo.Exists)
+                    {
+                        try
+                        {
                             using FileStream inStream = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                             bitmap = SKBitmap.Decode(inStream) ?? new SKBitmap(TileConstants.RegionSize, TileConstants.RegionSize);
-                        } catch (FileNotFoundException) {
+                        }
+                        catch (FileNotFoundException)
+                        {
                             // File was deleted between Exists check and Open (TOCTOU race condition)
                             bitmap = new SKBitmap(TileConstants.RegionSize, TileConstants.RegionSize);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         bitmap = new SKBitmap(TileConstants.RegionSize, TileConstants.RegionSize);
                     }
 
@@ -138,40 +159,51 @@ public unsafe class TileImage {
                     bitmap.Encode(_config.Web.TileType.Format, _config.Web.TileQuality).SaveTo(outStream);
 
                     bitmap.Dispose();
-                } else {
+                }
+                else
+                {
                     // Zoom level 0 always saves (base tile)
                     using FileStream outStream = fileInfo.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                     _bitmap.Encode(_config.Web.TileType.Format, _config.Web.TileQuality).SaveTo(outStream);
                 }
             }
-
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Logger.Error(e.ToString());
-        } finally {
+        }
+        finally
+        {
             // Always ensure change tracking is cleared
-            lock (_changeTrackingLock) {
+            lock (_changeTrackingLock)
+            {
                 _hasChanges = false;
                 _changedZoomLevels.Clear();
             }
         }
     }
 
-    private void WritePixels(SKBitmap png, int zoom) {
+    private void WritePixels(SKBitmap png, int zoom)
+    {
         int step = 1 << zoom;
         int baseX = ((_regionX * TileConstants.RegionSize) >> zoom) & TileConstants.RegionMask;
         int baseZ = ((_regionZ * TileConstants.RegionSize) >> zoom) & TileConstants.RegionMask;
         byte* pngPtr = (byte*)png.GetPixels().ToPointer();
         int pngRowBytes = png.RowBytes;
-        for (int x = 0; x < TileConstants.RegionSize; x += step) {
-            for (int z = 0; z < TileConstants.RegionSize; z += step) {
+        for (int x = 0; x < TileConstants.RegionSize; x += step)
+        {
+            for (int z = 0; z < TileConstants.RegionSize; z += step)
+            {
                 uint argb = ((uint*)(_bitmapPtr + (z * _bitmapRowBytes)))[x];
-                if (argb == 0) {
+                if (argb == 0)
+                {
                     // skipping 0 prevents overwrite existing
                     // parts of the buffer of existing images
                     continue;
                 }
 
-                if (step > 1) {
+                if (step > 1)
+                {
                     // merge pixel colors instead of skipping them
                     argb = DownSample(x, z, argb, step);
                 }
@@ -182,11 +214,19 @@ public unsafe class TileImage {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private uint DownSample(int x, int z, uint argb, int step) {
-        uint a = 0, r = 0, g = 0, b = 0, c = 0;
-        for (int i = 0; i < step; i++) {
-            for (int j = 0; j < step; j++) {
-                if (i != 0 && j != 0) {
+    private uint DownSample(int x, int z, uint argb, int step)
+    {
+        uint a = 0,
+            r = 0,
+            g = 0,
+            b = 0,
+            c = 0;
+        for (int i = 0; i < step; i++)
+        {
+            for (int j = 0; j < step; j++)
+            {
+                if (i != 0 && j != 0)
+                {
                     argb = ((uint*)(_bitmapPtr + ((z + j) * _bitmapRowBytes)))[x + i];
                 }
 

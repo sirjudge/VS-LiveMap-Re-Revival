@@ -15,7 +15,7 @@ public sealed class ColormapPacket : Packet {
     public int Month {
         get => _month;
         set {
-            if (value < 1 || value > 12) {
+            if (value is < 1 or > 12) {
                 return;
             }
 
@@ -29,7 +29,6 @@ public sealed class ColormapPacket : Packet {
         using MemoryStream compressedStream = new();
         using (GZipStream gzip = new(compressedStream, CompressionMode.Compress)) {
             gzip.Write(originalBytes, 0, originalBytes.Length);
-            gzip.Close();
         }
 
         byte[] compressedBytes = compressedStream.ToArray();
@@ -46,7 +45,6 @@ public sealed class ColormapPacket : Packet {
         using MemoryStream decompressedStream = new();
         using (GZipStream gzip = new(compressedStream, CompressionMode.Decompress)) {
             gzip.CopyTo(decompressedStream);
-            gzip.Close();
         }
 
         byte[] decompressedBytes = decompressedStream.ToArray();

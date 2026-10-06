@@ -136,6 +136,9 @@ public sealed class RenderTask(LiveMap server, RenderTaskManager renderTaskManag
             });
     }
 
+    /// <Summary>
+    /// Takes in chunk position, and slices of the chunk
+    /// </Summary>
     private void ProcessStructures(ChunkPos chunkPos, ServerChunk?[] chunkSlices)
     {
         ulong chunkIndex = chunkPos.ToChunkIndex();

@@ -27,13 +27,12 @@
     <ItemGroup>
         <PackageReference Include="GenHTTP.Core" Version="10.4.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
-
         <PackageReference Include="GenHTTP.Modules.IO" Version="10.4.0" />
         <Reference Include="$(VINTAGE_STORY)/**/*.dll" Private="false" Condition="'$(VINTAGE_STORY)' != '' and Exists('$(VINTAGE_STORY)')" />
         <Compile Remove="tests\**" />
         <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.7.0" IncludeAssets="compile" PrivateAssets="all" />
-        <!-- <None Include="LICENSE;README.md;resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" /> -->
         <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <!-- TODO: need to move these back to env variable import -->
         <Reference Include="0Harmony">
           <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\0Harmony.dll</HintPath>
           <Private>False</Private>

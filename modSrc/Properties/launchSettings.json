@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Client": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "commandLineArgs": "\"/opt/vintagestory/Vintagestory.dll\" --dataPath \"/home/nico/.config/VintagestoryData/Mods\" --addModPath \"$(ProjectDir)/bin/mods\" \"/home/nico/.config/VintagestoryData/Mods\"",
+      "workingDirectory": "/opt/vintagestory"
+    },
+    "Server": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "commandLineArgs": "\"/opt/vintagestory/VintagestoryServer.dll\" --dataPath \"/home/nico/.config/VintagestoryData/Mods\" --addModPath \"$(ProjectDir)/bin/mods\" \"/home/nico/.config/VintagestoryData/Mods\"",
+      "workingDirectory": "/opt/vintagestory"
+    }
+  }
+}

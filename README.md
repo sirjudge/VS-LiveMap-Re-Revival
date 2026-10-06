@@ -1,21 +1,23 @@
-![LiveMap](https://raw.githubusercontent.com/mja00/VS-LiveMap-Revival/master/.github/images/og.webp)
-
-
 [![MIT License](https://img.shields.io/github/license/mja00/VS-LiveMap-Revival?&logo=github&color)](https://github.com/mja00/VS-LiveMap-Revival/blob/master/LICENSE)
-
-<!--[![Servers](https://img.shields.io/bstats/servers/10133)](https://bstats.org/plugin/bukkit/Pl3xMap/10133)-->
-[![Stargazers](https://img.shields.io/github/stars/mja00/VS-LiveMap-Revival?style=flat&label=stars&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9bxSIVh1YQcYhQnSyIiuimVShChVArtOpgcukXNGlIUlwcBdeCgx+LVQcXZ10dXAVB8APE0clJ0UVK/F9SaBHjwXE/3t173L0D/PUyU82OMUDVLCOViAuZ7KrQ9YogwujDEGYkZupzopiE5/i6h4+vdzGe5X3uz9Gj5EwG+ATiWaYbFvEG8dSmpXPeJ46woqQQnxOPGnRB4keuyy6/cS447OeZESOdmieOEAuFNpbbmBUNlXiSOKqoGuX7My4rnLc4q+Uqa96TvzCU01aWuU5zEAksYgkiBMioooQyLMRo1UgxkaL9uId/wPGL5JLJVQIjxwIqUCE5fvA/+N2tmZ8Yd5NCcaDzxbY/hoGuXaBRs+3vY9tunACBZ+BKa/krdWD6k/RaS4seAb3bwMV1S5P3gMsdoP9JlwzJkQI0/fk88H5G35QFwrdA95rbW3Mfpw9AmrpK3gAHh8BIgbLXPd4dbO/t3zPN/n4Ax9dyyerighsAAAAGYktHRAAAAAAAAPlDu38AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfmCBMVNjtc7/hFAAABIElEQVQ4y62SzS5DURSFv6smXkAUCRU0UdKYGNTPyCsYYOYFGGi8Ao9QM0PxCh6CgQ4qfiLpBFEjdKCfySaXtDch1uScs9Ze62TvcyAD6o66zV+gjqpvalsd61XXl5GxBySx3/3t7UPqi1pTD9VXdaRbbZIyDQLTwBSwBqzGGaABnAInwCXQSJLk/tO4orb8jra6nwo/CC6NlrqMOq421Y5aVSfUXJe2cqFVo7b5NdwIuVaf1IWM2cyrD+qdOvlTLERIS53pYi6FdqMWet2wGP1tdNE2Q1vK+gfDsdbDlFfzwV3Ems8KmAXegcd4hSvgVq0Bz6GV0ob+HgF1YAA4Cn4LWA9tLusHnscTHavFFF8MrqOeZQVU1HKGXlYr/Cc+AKuOI2h/Jrf7AAAAAElFTkSuQmCC)](https://github.com/mja00/VS-LiveMap-Revival/stargazers)
-[![Forks](https://img.shields.io/github/forks/mja00/VS-LiveMap-Revival?style=flat&label=forks&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9bxSIVh1YQcYhQnSyIiuimVShChVArtOpgcukXNGlIUlwcBdeCgx+LVQcXZ10dXAVB8APE0clJ0UVK/F9SaBHjwXE/3t173L0D/PUyU82OMUDVLCOViAuZ7KrQ9YogwujDEGYkZupzopiE5/i6h4+vdzGe5X3uz9Gj5EwG+ATiWaYbFvEG8dSmpXPeJ46woqQQnxOPGnRB4keuyy6/cS447OeZESOdmieOEAuFNpbbmBUNlXiSOKqoGuX7My4rnLc4q+Uqa96TvzCU01aWuU5zEAksYgkiBMioooQyLMRo1UgxkaL9uId/wPGL5JLJVQIjxwIqUCE5fvA/+N2tmZ8Yd5NCcaDzxbY/hoGuXaBRs+3vY9tunACBZ+BKa/krdWD6k/RaS4seAb3bwMV1S5P3gMsdoP9JlwzJkQI0/fk88H5G35QFwrdA95rbW3Mfpw9AmrpK3gAHh8BIgbLXPd4dbO/t3zPN/n4Ax9dyyerighsAAAAGYktHRAAAAAAAAPlDu38AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfmCBMVNCYN3/YeAAAA/UlEQVQ4y7WTQUoDQRBFf01czlJcxUyOINGjjAvFHMFzZGdygOwDwTtk6UZcqLlAxCAuMigug89FamIzdAIN+qGhq/6v6qrqbumvAJwBj8AHMAQs4DJgBHy65jSW4Bl4AaZsUAbcufumrnmquSzIcSzpTtLA7XbA1fuBa9qxCob8YgUUAdcFqoC/iSXIgLELOhG+49w4nM+2BTP7ljR3M4/MufbNzYxdN1E0Sm2ialZnsVIllZKOJF24eyLpXdKtmS1S3sYMmO3THOwJziUdbrbkZvaVcnILeAh6vweylAQ9D7z2BXCS0sJS0lrSpdtrSW+pn6sPLIFX4Er/hR9C0wl1FTBzNwAAAABJRU5ErkJggg==)](https://github.com/mja00/VS-LiveMap-Revival/network/members)
-[![Watchers](https://img.shields.io/github/watchers/mja00/VS-LiveMap-Revival?style=flat&label=watchers&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9bxSIVh1YQcYhQnSyIiuimVShChVArtOpgcukXNGlIUlwcBdeCgx+LVQcXZ10dXAVB8APE0clJ0UVK/F9SaBHjwXE/3t173L0D/PUyU82OMUDVLCOViAuZ7KrQ9YogwujDEGYkZupzopiE5/i6h4+vdzGe5X3uz9Gj5EwG+ATiWaYbFvEG8dSmpXPeJ46woqQQnxOPGnRB4keuyy6/cS447OeZESOdmieOEAuFNpbbmBUNlXiSOKqoGuX7My4rnLc4q+Uqa96TvzCU01aWuU5zEAksYgkiBMioooQyLMRo1UgxkaL9uId/wPGL5JLJVQIjxwIqUCE5fvA/+N2tmZ8Yd5NCcaDzxbY/hoGuXaBRs+3vY9tunACBZ+BKa/krdWD6k/RaS4seAb3bwMV1S5P3gMsdoP9JlwzJkQI0/fk88H5G35QFwrdA95rbW3Mfpw9AmrpK3gAHh8BIgbLXPd4dbO/t3zPN/n4Ax9dyyerighsAAAAGYktHRAAAAAAAAPlDu38AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfmCBMVNw4TRw0nAAAA3UlEQVQ4y83SP04CURAG8I0lewHOwAFUaiwkdmAlp8CL4FHopfIvtOIJWE3opIBK489mQPKy6xYWOskkL9/MN/PNzMuyf2fIcYkZVuGzwPI68gle8Yl7jMIfAntBp4o8wAeecFgSP8I8cgZp8DwC12j8oLCBCd7R34ItbHCzT8ZZSC7QTYrcYo1WhjGWaCbdCt+2SGLN4IwPfnu07QjrkhG6oWKB0+TMd7sRAuzHYuqWmO8tsVd1xjmOS8htPEfORVWHTmweHnEVPg2sqPxIicxhFFjhLd7D2q/8J/YFHSJt9VSqQ08AAAAASUVORK5CYII=)](https://github.com/mja00/VS-LiveMap-Revival/watchers)
-
+# LiveMap Re-Revival
+## Overview
 ***
+**This is a fork of the fork of the original by Billy**
+LiveMap, is a Google Maps-like map for Vintage Story that can be viewed in a browser. Easy to set up when making use of LiveMap's integrated web server which works out-of-the-box, while also available to be integrated into existing websites running on Apache and the like.
 
-**This is a fork of the original by Billy**
+**Note (October 2nd, 2026) :** Anything in this repository `README.md` should be considered possibly out-of-date at this given time due to me (SirJudge) still working on this to bring everything up to better standards. As refactors and fixes are put in this will drift and at some point be fully updated. Please bear with me through this transition and open a PR or issue if something has gone awry.
 
-LiveMap is a Google Maps-like map for Vintage Story that can be viewed in a browser. Easy to set up when making use of LiveMap's integrated webserver which works out-of-the-box, while also available to be integrated into existing websites running on Apache and the like.
+**Additional Note:** At this point in time translations are broken. I'm aware of this and hope to fix in a future patch.
+## Currently Broken Features or Important Notes
+- Water doesn't render as water and instead I think nothing?. For some reason it's not rendering the correct tiles for water. I'm not sure if this is because it's not loading them or if it's because it's not finding them or if it's not rendering the correctly found tile. This seems like I might have to break forward to improve and that's okay because no one uses this mod yet. I believe we in the business call this "Experimental" or "Nightly".
+- Slow? It's obviously built with threading in mind but golly I think they be threading slow without using new .net features. This was ported from .net 8 and already seemed to have a heavy hand in optimizing with threads but in a seemingly verbose way. Rendering takes a lot of resources so obviously not a smart idea to go nuts. I think there's a fine tuning here if we refuse to believe this is as fast as it goes.
+- Security Audit. This needs to be done decently. I can't really audit until I'm done with finishing the fixes for all of this and this also just takes some time. JetBrains rider ships with some security scan like features for outdated or vulnerable packages but more work should be done to identify a better code scan tool, preferably free and open source.
 
+## AI Policy
+The original version of this mod which was forked and rebuilt enough using AI was eventually hit with a disruption due to .NET updates and depreciated API calls. This is a revival to the original revival and was done so without AI directly writing to this codebase from this commit (INSERT COMMIT HERE LATER) Onwards. LLMs can and will be used for consultation - As my good friend said "Let the pattern machine find the pattern" - but will not be allowed to directly write any code.
+
+I want this repo to remain free of generative AI written code from here forward. This refactor and all new additional logic will be artisanal hand written, just like ye' olden days as a reminder that they cannot come for human ingenuity.
 ## Features
-
 * **Integrated Web Server**: Out-of-the-box web hosting for the map, with no external dependencies required.
 * **Real-time Updates**: The map updates automatically as players explore and modify the world.
 * **Built-in Layers**:
@@ -32,22 +34,22 @@ LiveMap is a Google Maps-like map for Vintage Story that can be viewed in a brow
 
 All releases can be downloaded from the VintageStory ModDB site at:
 
+### New URL:
+*WIP - Check back later*
+
+### Legacy URL:
 [https://mods.vintagestory.at/vslivemaprevival](https://mods.vintagestory.at/vslivemaprevival)
 
-## Demo
-
-A live demo of LiveMap can be accessed at:
-
-- https://vslivemap.mart.fyi/
-
-![Screenshot of markers on map](https://raw.githubusercontent.com/mja00/VS-LiveMap-Revival/master/.github/images/og5.webp)
+<!-- TODO: Figure out what to do with this section, this is the old version and also someone else's stuff -->
+<!-- ## Demo -->
+<!-- A live demo of LiveMap can be accessed at: -->
+<!-- - https://vslivemap.mart.fyi/ -->
+<!-- ![Screenshot of markers on map](https://raw.githubusercontent.com/mja00/VS-LiveMap-Revival/master/.github/images/og5.webp) -->
 
 ## For Developers
-
 There is an extensive API that allows you to automate adding/updating your own layers and markers on the map.
 
 ### Documentation
-
 Documentation is automatically generated and hosted on GitHub Pages. You can find it at:
 
 [https://mja00.dev/VS-LiveMap-Revival/](https://mja00.dev/VS-LiveMap-Revival/)
@@ -63,8 +65,7 @@ The generated documentation will be located in `docs/html`.
 ## Building from Source
 
 Prerequisites:
-
-* [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+* [.NET SDK 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 * [npm](https://www.npmjs.com/)
 * [Node.js](https://nodejs.org/en)
 * [ReSharper Extension](https://www.jetbrains.com/resharper/vscode/) (optional but highly recommended)

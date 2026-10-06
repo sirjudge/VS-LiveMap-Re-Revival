@@ -8,7 +8,12 @@ export class Notifications {
 		document.body.append(this._dom);
 	}
 
-	public create(type: ('info' | 'success' | 'warning' | 'danger'), text: string): void {
+	//TODO: should add a queue system as to not get overloaded by
+	//notifications crashing the page
+	public create(
+		type: ('info' | 'success' | 'warning' | 'danger'),
+		text: string
+	): void {
 		const div: HTMLElement = this._dom.appendChild(L.DomUtil.create('div', type));
 		div.append(window.createSVGIcon(type));
 		div.appendChild(L.DomUtil.create('p')).innerText = text;

@@ -1,0 +1,325 @@
+using System.Collections;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using LiveMap.Configuration;
+using LiveMap.Data;
+using LiveMap.Layer.Marker;
+using LiveMap.Layer.Marker.Options;
+using LiveMap.Layer.Marker.Options.type;
+using LiveMap.Util;
+using Vintagestory.API.Common;
+using Vintagestory.GameContent;
+
+namespace LiveMap.Layer.BuiltIn;
+
+public class VSCartographerLayer : Layer {
+    private bool _isModInstalled;
+    private object? _sharedLayer;
+    private FieldInfo? _waypointsField;
+
+    public VSCartographerLayer() : base("vscartographer", "lang.vscartographer".ToLang()) {
+        _isModInstalled = DetectVSCartographer();
+    }
+
+    public override int? Interval => Config.UpdateInterval;
+
+    public override bool? Hidden {
+        get {
+            return !Config.DefaultShowLayer || !_isModInstalled;
+        }
+    }
+
+    public override List<Marker.Marker> Markers {
+        get {
+            if (!_isModInstalled || _sharedLayer == null || _waypointsField == null) {
+                return [];
+            }
+
+            try {
+                // Waypoints is a public field: Dictionary<string, List<SharedWaypoint>>
+                object? waypointsDict = _waypointsField.GetValue(_sharedLayer);
+                if (waypointsDict == null || waypointsDict is not IDictionary dict) {
+                    return [];
+                }
+
+                List<Marker.Marker> markers = [];
+
+                foreach (DictionaryEntry entry in dict) {
+                    if (entry.Value is IEnumerable waypointList) {
+                        List<object?> waypointArray = waypointList.Cast<object?>().ToList();
+                        foreach (object? waypoint in waypointArray) {
+                            if (waypoint == null) {
+                                continue;
+                            }
+
+                            Marker.Marker? marker = ConvertWaypointToMarker(waypoint);
+                            if (marker != null) {
+                                markers.Add(marker);
+                            }
+                        }
+                    }
+                }
+
+                return markers;
+            } catch (Exception e) {
+                Logger.Warn($"Failed to access VSCartographer waypoints: {e.Message}");
+                return [];
+            }
+        }
+    }
+
+    public override string Filename => Path.Combine(Files.MarkerDir, $"{Id}.json");
+
+    private static VSCartographer Config => LiveMap.Api.Config.Layers.VSCartographer;
+
+    private bool DetectVSCartographer() {
+        try {
+            // Check if mod is installed
+            Mod? mod = LiveMap.Api.Sapi.ModLoader.Mods.FirstOrDefault(m => m.Info.ModID == "nbcartographer");
+            if (mod == null) {
+                return false;
+            }
+
+            // Get WorldMapManager (similar to MinimalCompass pattern)
+            WorldMapManager? worldMapManager = LiveMap.Api.Sapi.ModLoader.GetModSystem<WorldMapManager>();
+            if (worldMapManager == null) {
+                return false;
+            }
+
+            // Try to access MapLayers directly (public property), fallback to reflection
+            IEnumerable? mapLayers = null;
+            PropertyInfo? mapLayersProperty = typeof(WorldMapManager).GetProperty("MapLayers", BindingFlags.Public | BindingFlags.Instance);
+            if (mapLayersProperty != null) {
+                mapLayers = mapLayersProperty.GetValue(worldMapManager) as IEnumerable;
+            } else {
+                // Fallback: try as field
+                FieldInfo? mapLayersField = typeof(WorldMapManager).GetField("MapLayers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (mapLayersField != null) {
+                    mapLayers = mapLayersField.GetValue(worldMapManager) as IEnumerable;
+                }
+            }
+
+            if (mapLayers == null) {
+                return false;
+            }
+
+            // Find SharedWaypointMapLayer by LayerGroupCode (similar to OfType<> pattern)
+            // The layer is registered with layer group "sharedwaypoints"
+            foreach (object? layer in mapLayers.Cast<object>()) {
+                if (layer == null) {
+                    continue;
+                }
+
+                // Check LayerGroupCode property (public property on MapLayer base class)
+                PropertyInfo? layerGroupCodeProperty = layer.GetType().GetProperty("LayerGroupCode", BindingFlags.Public | BindingFlags.Instance);
+                if (layerGroupCodeProperty?.GetValue(layer)?.ToString() == "sharedwaypoints") {
+                    _sharedLayer = layer;
+                    // Waypoints is a public field: Dictionary<string, List<SharedWaypoint>>
+                    FieldInfo? waypointsField = layer.GetType().GetField("Waypoints", BindingFlags.Public | BindingFlags.Instance);
+                    if (waypointsField != null) {
+                        _waypointsField = waypointsField;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        } catch (Exception e) {
+            Logger.Warn($"Failed to detect VSCartographer: {e.Message}");
+            return false;
+        }
+    }
+
+    private static Icon? ConvertWaypointToMarker(object waypoint) {
+        try {
+            // Access waypoint properties via reflection
+            Type waypointType = waypoint.GetType();
+
+            // Get Position - it's a public field, not a property
+            MemberInfo? positionMember = FindPropertyOrField(waypointType, "Position", BindingFlags.Public | BindingFlags.Instance);
+            if (positionMember == null) {
+                return null;
+            }
+
+            object? position = GetMemberValue(positionMember, waypoint);
+            if (position == null) {
+                return null;
+            }
+
+            // Extract X and Z from Vec3d - check both fields and properties
+            Type positionType = position.GetType();
+            MemberInfo? xMember = FindPropertyOrField(positionType, "X", BindingFlags.Public | BindingFlags.Instance);
+            MemberInfo? zMember = FindPropertyOrField(positionType, "Z", BindingFlags.Public | BindingFlags.Instance);
+            if (xMember == null || zMember == null) {
+                return null;
+            }
+
+            double x = Convert.ToDouble(GetMemberValue(xMember, position) ?? 0);
+            double z = Convert.ToDouble(GetMemberValue(zMember, position) ?? 0);
+            Point point = new Point(x, z);
+
+            // Get Title - check both field and property
+            MemberInfo? titleMember = FindPropertyOrField(waypointType, "Title", BindingFlags.Public | BindingFlags.Instance);
+            string title = GetMemberValue(titleMember, waypoint)?.ToString() ?? "Unknown";
+
+            // Get Guid for unique ID - check both field and property
+            MemberInfo? guidMember = FindPropertyOrField(waypointType, "Guid", BindingFlags.Public | BindingFlags.Instance);
+            string guid = GetMemberValue(guidMember, waypoint)?.ToString() ?? Guid.NewGuid().ToString();
+
+            // Get OwningPlayerUid for tooltip - check both field and property
+            MemberInfo? owningPlayerUidMember = FindPropertyOrField(waypointType, "OwningPlayerUid", BindingFlags.Public | BindingFlags.Instance);
+            string? owningPlayerUid = GetMemberValue(owningPlayerUidMember, waypoint)?.ToString();
+
+            // Get Icon public string
+            MemberInfo? iconMember = FindPropertyOrField(waypointType, "Icon", BindingFlags.Public | BindingFlags.Instance);
+            string? iconString = GetMemberValue(iconMember, waypoint)?.ToString() ?? "#svg-marker";
+
+            // Get Color public int (ARGB format)
+            MemberInfo? colorMember = FindPropertyOrField(waypointType, "Color", BindingFlags.Public | BindingFlags.Instance);
+            object? colorValue = GetMemberValue(colorMember, waypoint);
+            int colorInt = colorValue != null ? Convert.ToInt32(colorValue) : 0;
+
+            // Convert ARGB int to hex string (format: #RRGGBB, ignoring alpha for now)
+            string? colorHex = null;
+            if (colorInt != 0) {
+                // Extract RGB components from ARGB int
+                int r = (colorInt >> 16) & 0xFF;
+                int g = (colorInt >> 8) & 0xFF;
+                int b = colorInt & 0xFF;
+                colorHex = $"#{r:X2}{g:X2}{b:X2}";
+            }
+
+            // Convert player UID to player name
+            string? owningPlayer = null;
+            if (!string.IsNullOrEmpty(owningPlayerUid)) {
+                try {
+                    // First, try to find online player
+                    Vintagestory.API.Server.IServerPlayer? onlinePlayer = LiveMap.Api.Sapi.World.AllOnlinePlayers
+                        .Cast<Vintagestory.API.Server.IServerPlayer>()
+                        .FirstOrDefault(p => p.PlayerUID == owningPlayerUid);
+
+                    if (onlinePlayer != null) {
+                        owningPlayer = onlinePlayer.PlayerName;
+                    } else {
+                        // Player not online, try to get from PlayerData
+                        Vintagestory.API.Server.IServerPlayerData playerData = LiveMap.Api.Sapi.PlayerData.GetPlayerDataByUid(owningPlayerUid);
+                        if (playerData != null) {
+                            // Try LastKnownPlayername as a field or property
+                            MemberInfo? nameMember = FindPropertyOrField(
+                                playerData.GetType(),
+                                "LastKnownPlayername",
+                                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                            );
+                            if (nameMember != null) {
+                                owningPlayer = GetMemberValue(nameMember, playerData)?.ToString();
+                            }
+                        }
+                    }
+                } catch {
+                    // Silently fail - just won't show player name
+                }
+            }
+
+            // HTML encode user-controlled content to prevent XSS
+            string safeTitle = WebUtility.HtmlEncode(title);
+            string safeOwningPlayer = WebUtility.HtmlEncode(owningPlayer ?? "");
+
+            // Create icon options
+            IconOptions iconOptions = Config.IconOptions.DeepCopy();
+
+            if (iconString != null) {
+                iconOptions.IconUrl = iconString.StartsWith("#svg-") ? iconString : $"#svg-{iconString}";
+            }
+
+            if (colorHex != null) {
+                iconOptions.Color = colorHex;
+            }
+
+            // Create tooltip
+            TooltipOptions? tooltip = Config.Tooltip?.DeepCopy();
+            if (tooltip?.Content != null) {
+                string tooltipText = !string.IsNullOrEmpty(owningPlayer) ? $"{safeTitle} (by {safeOwningPlayer})" : safeTitle;
+                tooltip.Content = string.Format(tooltip.Content, tooltipText);
+            }
+
+            // Create popup
+            PopupOptions? popup = Config.Popup?.DeepCopy();
+            if (popup?.Content != null) {
+                popup.Content = !string.IsNullOrEmpty(owningPlayer) ? $"{safeTitle}<br>Created by: {safeOwningPlayer}" : safeTitle;
+            }
+
+            Icon icon = new Icon($"vscartographer:{guid}", point, iconOptions) {
+                Tooltip = tooltip,
+                Popup = popup
+            };
+
+            return icon;
+        } catch (Exception e) {
+            Logger.Warn($"Failed to convert VSCartographer waypoint to marker: {e.Message}");
+            return null;
+        }
+    }
+
+    public override async System.Threading.Tasks.Task WriteToDisk(CancellationToken cancellationToken) {
+        // Re-check mod installation status in case mod was removed
+        bool isModInstalled = DetectVSCartographer();
+
+        if (Config.Enabled && isModInstalled) {
+            _isModInstalled = true;
+            await base.WriteToDisk(cancellationToken);
+        } else {
+            // Mod not installed or disabled - delete the JSON file if it exists
+            _isModInstalled = false;
+            if (File.Exists(Filename)) {
+                try {
+                    File.Delete(Filename);
+                } catch (Exception e) {
+                    Logger.Warn($"Failed to delete VSCartographer layer file '{Filename}': {e.Message}");
+                }
+            }
+        }
+    }
+
+    // Helper methods for reflection
+    private static MemberInfo? FindMember(Type type, string[] names, BindingFlags flags) {
+        // Get all members (properties, fields, methods) with comprehensive flags
+        BindingFlags comprehensiveFlags = flags | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
+        foreach (string name in names) {
+            // GetMember returns all members (properties, fields, methods) with the given name
+            MemberInfo[] members = type.GetMember(name, comprehensiveFlags);
+
+            // Prefer property, then field
+            MemberInfo? member = members.FirstOrDefault(m => m is PropertyInfo)
+                ?? members.FirstOrDefault(m => m is FieldInfo);
+
+            if (member != null) {
+                return member;
+            }
+        }
+        return null;
+    }
+
+    private static object? GetMemberValue(MemberInfo? member, object? instance) {
+        return member == null || instance == null
+            ? null
+            : member switch {
+                PropertyInfo property => property.GetValue(instance),
+                FieldInfo field => field.GetValue(instance),
+                _ => null
+            };
+    }
+
+    private static MemberInfo? FindPropertyOrField(Type type, string name, BindingFlags flags) {
+        // Use comprehensive flags to get both public and non-public members
+        BindingFlags comprehensiveFlags = flags | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
+        // GetMember returns all members (properties, fields, methods) with the given name
+        MemberInfo[] members = type.GetMember(name, comprehensiveFlags);
+
+        // Prefer property, then field
+        return members.FirstOrDefault(m => m is PropertyInfo)
+            ?? members.FirstOrDefault(m => m is FieldInfo);
+    }
+}

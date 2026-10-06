@@ -1,15 +1,21 @@
-# Changelog
-
+# [ChangeLog]
 All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+*Note:* Changing how I do the change log to Add, Change/Fix, and Remove rather than how it was previously being done. I like this way better and it makes more sense to my brain to be overly transparent.
 
-## [Unreleased]
+# 0.2.0 - 2026 - 10 -01
+## Addition
+- Added dependency on `resolve-cwd` npm package to build time error. Not sure what had changed but seemed to be an issue with webpack not being able to find it without explicit addition of the package.
+## Change/Fix
+- Update to .NET 10
+- Refactor file structure and namespaces to follow .NET styles + fix out of date shell script
+- Updated depreciated calls to `SidePos` in favor of `Pos`
+- Refactored build.sh, and other various project files to resolve build errors due to new standards
+## Remove
+- Deleted AI files from repository and updated README to denote this repository will be certified AI Free from this moment forwards.
 
-No unreleased changes yet.
-
-## [0.1.9] - 2026-01-04
+# [0.1.9] - 2026-01-04
 
 ### Fixes
 - Translocator layer ([7244a61](https://github.com/mja00/VS-LiveMap-Revival/commit/7244a61)) #43
@@ -17,7 +23,7 @@ No unreleased changes yet.
 ### Refactor
 - Remove some redundant reflections ([2c7ada4](https://github.com/mja00/VS-LiveMap-Revival/commit/2c7ada4))
 
-## [0.1.8] - 2026-01-03
+# [0.1.8] - 2026-01-03
 
 ### Features
 - Add support for Cartographer's shared waypoint layer ([860c747](https://github.com/mja00/VS-LiveMap-Revival/commit/860c747)) #41
@@ -30,7 +36,7 @@ No unreleased changes yet.
 ### Chores
 - Bump to 0.1.8 ([6ca6dbd](https://github.com/mja00/VS-LiveMap-Revival/commit/6ca6dbd))
 
-## [0.1.7] - 2026-01-03
+# [0.1.7] - 2026-01-03
 
 ### Features
 - Run fullrender on colormap received ([143f26e](https://github.com/mja00/VS-LiveMap-Revival/commit/143f26e))
@@ -43,7 +49,7 @@ No unreleased changes yet.
 ### Performance
 - Comprehensive performance optimizations ([a82c73b](https://github.com/mja00/VS-LiveMap-Revival/commit/a82c73b)) #38
 
-## [0.1.6] - 2026-01-02
+# [0.1.6] - 2026-01-02
 
 ### Features
 - Better translation support ([c40fb92](https://github.com/mja00/VS-LiveMap-Revival/commit/c40fb92)) #35
@@ -55,12 +61,12 @@ No unreleased changes yet.
 ### Chores
 - Run ReSharper ([69af792](https://github.com/mja00/VS-LiveMap-Revival/commit/69af792))
 
-## [0.1.5] - 2026-01-02
+# [0.1.5] - 2026-01-02
 
 ### Features
 - Add renderer buttons ([a5e8f5c](https://github.com/mja00/VS-LiveMap-Revival/commit/a5e8f5c)) #33
 
-## [0.1.4] - 2026-01-02
+# [0.1.4] - 2026-01-02
 
 ### Features
 - Add code quality checks ([a426e66](https://github.com/mja00/VS-LiveMap-Revival/commit/a426e66)) #32
@@ -69,12 +75,12 @@ No unreleased changes yet.
 - Chunk colormap on send ([f6530e8](https://github.com/mja00/VS-LiveMap-Revival/commit/f6530e8)) #31
 - Materialize map positions to avoid repeated DB queries ([4b16f7d](https://github.com/mja00/VS-LiveMap-Revival/commit/4b16f7d)) #29
 
-## [0.1.3] - 2026-01-01
+# [0.1.3] - 2026-01-01
 
 ### Fixes
 - Queueing chunks up on load ([3c11d36](https://github.com/mja00/VS-LiveMap-Revival/commit/3c11d36)) #28
 
-## [0.1.2] - 2026-01-01
+# [0.1.2] - 2026-01-01
 
 ### Features
 - Boilerplate test framework ([9813f3c](https://github.com/mja00/VS-LiveMap-Revival/commit/9813f3c)) #25
@@ -82,7 +88,7 @@ No unreleased changes yet.
 ### Fixes
 - Update links ([f821477](https://github.com/mja00/VS-LiveMap-Revival/commit/f821477)) #27
 
-## [0.1.1] - 2026-01-01
+# [0.1.1] - 2026-01-01
 
 ### Refactor
 - Swap to genHTTP ([a792160](https://github.com/mja00/VS-LiveMap-Revival/commit/a792160)) #23
@@ -91,7 +97,7 @@ No unreleased changes yet.
 - Add eslint ([924e916](https://github.com/mja00/VS-LiveMap-Revival/commit/924e916)) #22
 - Add code review reports ([61685f6](https://github.com/mja00/VS-LiveMap-Revival/commit/61685f6))
 
-## [0.1.0] - 2025-12-31
+# [0.1.0] - 2025-12-31
 
 ### Features
 - Initial release of VS-LiveMap-Revival
@@ -111,12 +117,12 @@ No unreleased changes yet.
 - Upgrade doxygen ([73c5375](https://github.com/mja00/VS-LiveMap-Revival/commit/73c5375))
 - Update readme ([1fc2ff3](https://github.com/mja00/VS-LiveMap-Revival/commit/1fc2ff3))
 
-## [0.0.13] - 2024-12-24
+# [0.0.13] - 2024-12-24
 
 ### Fixes
 - ArgumentOutOfRangeException with sepia colors ([5257dec](https://github.com/mja00/VS-LiveMap-Revival/commit/5257dec))
 
-## [0.0.12] - 2024-12-24
+# [0.0.12] - 2024-12-24
 
 ### Features
 - Add friendly URLs setting to config file ([9a055c9](https://github.com/mja00/VS-LiveMap-Revival/commit/9a055c9))

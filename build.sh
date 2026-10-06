@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Build script for LiveMap mod
 
 set -e
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/modSrc"
 PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
 
 # Default values
@@ -86,14 +85,14 @@ success "VINTAGE_STORY: $VINTAGE_STORY"
 if [[ "$CLEAN" == true ]]; then
     step "Cleaning build artifacts..."
     dotnet clean "$PROJECT_FILE" -c "$CONFIGURATION" --nologo -v q
-    rm -rf "$PROJECT_ROOT/web/dist"
+    rm -rf "web/dist"
     success "Clean complete"
 fi
 
 # Build web frontend
 if [[ "$SKIP_WEB" == false ]]; then
     step "Building web frontend..."
-    pushd "$PROJECT_ROOT/web" > /dev/null
+    pushd "web" > /dev/null
     npm install --silent
     npm run build
     popd > /dev/null
@@ -124,9 +123,13 @@ else
 fi
 mv "$LATEST_ZIP" "$RELEASE_DIR/"
 # append version to zip name
-VERSION=$(cat "$PROJECT_ROOT/resources/modinfo.json" | jq -r .version)
+VERSION=$(cat "$PROJECT_ROOT/Resources/modinfo.json" | jq -r .version)
 NEW_ZIP_NAME="LiveMap-$VERSION.zip"
 mv "$RELEASE_DIR/LiveMap.zip" "$RELEASE_DIR/$NEW_ZIP_NAME"
 
 echo ""
 success "Build completed successfully!"
+
+# TODO: Eventually make this a flag but just hard code it always run for now
+rm -f /home/nico/.config/VintagestoryData/Mods/LiveMap.zip
+cp "$RELEASE_DIR/$NEW_ZIP_NAME" /home/nico/.config/VintagestoryData/Mods/

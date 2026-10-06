@@ -1,0 +1,104 @@
+using System.Collections.Concurrent;
+using LiveMap.Configuration;
+using LiveMap.Layer.Marker;
+using LiveMap.Layer.Marker.Options;
+using LiveMap.Util;
+using Newtonsoft.Json;
+using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
+using Vintagestory.API.Util;
+
+namespace LiveMap.Layer.BuiltIn;
+
+public class TradersLayer : Layer {
+    private readonly string _knownFile;
+
+    private readonly ConcurrentDictionary<ulong, HashSet<Trader>> _knownTraders;
+
+    private bool _dirty;
+
+    public TradersLayer() : base("traders", "lang.traders".ToLang()) {
+        _knownFile = Path.Combine(Files.JsonDir, $"{Id}.json");
+
+        ConcurrentDictionary<ulong, HashSet<Trader>>? traders = null;
+        if (File.Exists(_knownFile)) {
+            try {
+                string json = File.ReadAllText(_knownFile);
+                traders = JsonConvert.DeserializeObject<ConcurrentDictionary<ulong, HashSet<Trader>>>(json);
+            } catch (Exception e) {
+                Logger.Warn($"Failed to load traders from '{_knownFile}': {e.Message}");
+            }
+        }
+
+        _knownTraders = traders ?? new ConcurrentDictionary<ulong, HashSet<Trader>>();
+    }
+
+    public override int? Interval => Config.UpdateInterval;
+
+    public override bool? Hidden => !Config.DefaultShowLayer;
+
+    public override List<Marker.Marker> Markers {
+        get {
+            List<Marker.Marker> list = [];
+            _knownTraders.Values.Foreach(traders => {
+                traders.Foreach(trader => {
+                    TooltipOptions? tooltip = Config.Tooltip?.DeepCopy();
+                    if (tooltip?.Content != null) {
+                        tooltip.Content = string.Format(tooltip.Content, trader.Name, Lang.Get(trader.Type));
+                    }
+
+                    PopupOptions? popup = Config.Popup?.DeepCopy();
+                    if (popup?.Content != null) {
+                        string localizedType = Lang.Get(trader.Type);
+                        popup.Content = string.Format(popup.Content, trader.Name, localizedType);
+                    }
+
+                    list.Add(new Icon($"trader:{trader.Id}", trader.Pos.ToPoint(), Config.IconOptions) { Tooltip = tooltip, Popup = popup });
+                });
+            });
+            return list;
+        }
+    }
+
+    public override string? Css => Config.Css;
+
+    public override string Filename => Path.Combine(Files.MarkerDir, $"{Id}.json");
+
+    private static Traders Config => LiveMap.Api.Config.Layers.Traders;
+
+    public void SetTraders(ulong chunkIndex, HashSet<Trader> traders) {
+        if (traders.Count == 0) {
+            _knownTraders.Remove(chunkIndex);
+        } else {
+            _knownTraders[chunkIndex] = traders;
+        }
+
+        _dirty = true;
+    }
+
+    public override async System.Threading.Tasks.Task WriteToDisk(CancellationToken cancellationToken) {
+        if (_dirty) {
+            string knownJson = JsonConvert.SerializeObject(_knownTraders, Files.JsonSerializerMinifiedSettings);
+
+            if (cancellationToken.IsCancellationRequested) {
+                return;
+            }
+
+            await Files.WriteJsonAsync(_knownFile, knownJson, cancellationToken);
+            _dirty = false;
+
+            if (cancellationToken.IsCancellationRequested) {
+                return;
+            }
+        }
+
+        await base.WriteToDisk(cancellationToken);
+    }
+
+    public class Trader(string type, long id, string name, Vec3i pos) {
+        public readonly long Id = id;
+        public readonly string Name = name;
+        public readonly Vec3i Pos = pos;
+        public readonly string Type = type;
+    }
+}

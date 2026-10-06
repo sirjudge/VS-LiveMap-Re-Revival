@@ -1,0 +1,111 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <LangVersion>12</LangVersion>
+        <!-- Suppress warnings from external Vintage Story dependencies that we cannot control -->
+<!--        <NoWarn>$(NoWarn);MSB3246;MSB3277</NoWarn>-->
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>LiveMap.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GenHTTP.Core" Version="10.4.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
+        <PackageReference Include="GenHTTP.Modules.IO" Version="10.4.0" />
+        <Reference Include="$(VINTAGE_STORY)/**/*.dll" Private="false" Condition="'$(VINTAGE_STORY)' != '' and Exists('$(VINTAGE_STORY)')" />
+        <Compile Remove="tests\**" />
+        <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.7.0" IncludeAssets="compile" PrivateAssets="all" />
+        <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+        <!-- TODO: need to move these back to env variable import -->
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.Data.Sqlite">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\Microsoft.Data.Sqlite.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\Newtonsoft.Json.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="protobuf-net">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\protobuf-net.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="SkiaSharp">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Lib\SkiaSharp.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="VintagestoryAPI">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\VintagestoryAPI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="VintagestoryLib">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\VintagestoryLib.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <None Update="modinfo.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <Reference Include="VSEssentials">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSEssentials.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="VSSurvivalMod">
+          <HintPath>..\..\..\..\..\..\opt\vintagestory\Mods\VSSurvivalMod.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+    <Target Name="InstallAndRunNpm" AfterTargets="PostBuildEvent">
+        <Exec Command="npm install" WorkingDirectory="../web" />
+        <Exec Command="npm run build" WorkingDirectory="../web" />
+    </Target>
+    <Target Name="CopyWebDir" AfterTargets="PostBuildEvent">
+        <ItemGroup>
+            <_CopyWebStuffs Include="../web/public/**/*.*" Exclude="../web/public/tiles/**/*;../web/public/data/**" />
+            <_CopyWebStuffs Include="../web/dist/**/*.*" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="@(_CopyWebStuffs)"
+            DestinationFolder="$(TargetDir)/assets/livemap/config/%(RecursiveDir)"
+            SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Retries="3" RetryDelayMilliseconds="300" />
+    </Target>
+    <Target Name="FilterModInfo" AfterTargets="CopyWebDir">
+        <PropertyGroup>
+            <ModInfoJson>$(TargetDir)/modinfo.json</ModInfoJson>
+        </PropertyGroup>
+        <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(ModInfoJson))
+            .Replace('{version}','$(Version)')
+            .Replace('{description}','$(Description)')
+            )" File="$(ModInfoJson)" Overwrite="true" Encoding="UTF-8" />
+    </Target>
+    <Target Name="FilterIndexHtml" AfterTargets="FilterModInfo">
+        <PropertyGroup>
+            <IndexHTML>$(TargetDir)/assets/livemap/config/index.html</IndexHTML>
+        </PropertyGroup>
+        <WriteLinesToFile Lines="$([System.IO.File]::ReadAllText($(IndexHTML))
+            .Replace('{description}','$(Description)')
+            )" File="$(IndexHTML)" Overwrite="true" Encoding="UTF-8" />
+    </Target>
+    <Target Name="Package" AfterTargets="FilterIndexHtml">
+        <ZipDirectory DestinationFile="bin/$(TargetName).zip" SourceDirectory="$(TargetDir)" Overwrite="true" />
+    </Target>
+</Project>

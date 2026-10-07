@@ -8,18 +8,21 @@ public class SepiaRenderer() : Renderer("sepia") {
     private static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
 
     private static uint GetColor(int index) {
-        if (index <= 0) {
-            GetColor("ocean");
+        // if (index <= 0) {
+        if (index < 0) {
+            Logger.Warn($"index is less than 0, cannot display color:{index}");
+            GetColor("unknown");
         }
 
         if (index < LiveMap.Api.SepiaColors.ColorsByCode.Count) {
-            return LiveMap.Api.SepiaColors.ColorsByCode.GetAt(index).Value;
+            uint colorCodeToReturn = LiveMap.Api.SepiaColors.ColorsByCode.GetAt(index).Value;
+            Logger.Debug($"Returning the colorCode:{colorCodeToReturn}");
         }
 
+        Logger.Debug($"yolo the ocean again when indexing sepia color:{index}");
         return GetColor("ocean");
     }
 
-    //TODO: think something is wonky with my water coloring
     public override void ProcessBlockData(int regionX, int regionZ, BlockData blockData) {
         if (TileImage == null) {
             return;
@@ -43,14 +46,19 @@ public class SepiaRenderer() : Renderer("sepia") {
 
                 (int id, int y) = ProcessBlock(block);
 
-                uint color = IsWater(id)
-                    ? IsWater(blockData.Get(x, z - 1)?.Top) &&
+                bool isWaterEdge = false;
+                bool isWater = IsWater(id);
+                if (isWater){
+                    isWaterEdge =
+                    IsWater(blockData.Get(x, z - 1)?.Top) &&
                       IsWater(blockData.Get(x + 1, z)?.Top) &&
                       IsWater(blockData.Get(x, z + 1)?.Top) &&
-                      IsWater(blockData.Get(x - 1, z)?.Top)
-                        ? GetColor(GetIndex(id))
-                        : GetColor("wateredge")
-                    : GetColor(GetIndex(id));
+                      IsWater(blockData.Get(x - 1, z)?.Top);
+                }
+
+                uint color = isWaterEdge?
+                    GetColor("wateredge") :
+                    GetColor(GetIndex(id));
 
                 // Use optimized shadow calculation
                 float yDiff = ProcessShadowOptimized(x, y, z, blockData, prevRowCache, currentRowCache);

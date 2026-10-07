@@ -6,7 +6,6 @@ public class SepiaRenderer() : Renderer("sepia") {
     private static bool IsWater(int? id) => id == null || LiveMap.Api.SepiaColors.BlockIsWater[(int)id];
     private static byte GetIndex(int id) => LiveMap.Api.SepiaColors.Block2Color[id];
     private static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
-
     private static uint GetColor(int index) {
         // if (index <= 0) {
         if (index < 0) {
@@ -15,7 +14,7 @@ public class SepiaRenderer() : Renderer("sepia") {
         }
 
         if (index < LiveMap.Api.SepiaColors.ColorsByCode.Count) {
-            uint colorCodeToReturn = LiveMap.Api.SepiaColors.ColorsByCode.GetAt(index).Value;
+            uint colorCodeToReturn = LiveMap.Api.SepiaColors.ColorsByCode.GetValueAtIndex(index);
             Logger.Debug($"Returning the colorCode:{colorCodeToReturn}");
         }
 

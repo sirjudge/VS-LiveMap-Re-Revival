@@ -1,6 +1,5 @@
 using SkiaSharp;
 using Vintagestory.API.Common;
-using Vintagestory.API.Util;
 
 namespace LiveMap.Data;
 
@@ -10,7 +9,7 @@ namespace LiveMap.Data;
 public class SepiaColors {
     public byte[] Block2Color { get; private set; }
     public bool[] BlockIsWater { get; private set; }
-    public OrderedDictionary<string, string> HexColorsByCode { get; } = new() {
+    public Vintagestory.API.Datastructures.OrderedDictionary<string, string> HexColorsByCode { get; } = new() {
         { "ink", "#483018" },
         { "settlement", "#856844" },
         { "wateredge", "#483018" },
@@ -24,7 +23,7 @@ public class SepiaColors {
         { "glacier", "#E0E0C0" },
         { "unknown", "#FF1493" }
     };
-    public OrderedDictionary<string, uint> ColorsByCode { get; } = [];
+    public Vintagestory.API.Datastructures.OrderedDictionary<string, uint> ColorsByCode { get; } = [];
     public SepiaColors(LiveMap server) {
         int max = server.Sapi.World.Blocks.Count;
         Block2Color = new byte[max + 1];
@@ -36,7 +35,7 @@ public class SepiaColors {
 
         foreach (Block block in server.Sapi.World.Blocks) {
             if (block.BlockMaterial == EnumBlockMaterial.Snow && block.Code.Path.Contains("snowblock")) {
-                Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOf("glacier");
+                Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey("glacier");
                 BlockIsWater[block.BlockId] = false;
                 continue;
             }
@@ -46,7 +45,7 @@ public class SepiaColors {
                 colorCode = block.Attributes["mapColorCode"].AsString() ?? GetDefaultMapColorCode(block.BlockMaterial);
             }
 
-            Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOf(colorCode);
+            Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey(colorCode);
             BlockIsWater[block.BlockId] = block.BlockMaterial == EnumBlockMaterial.Water || (block.BlockMaterial == EnumBlockMaterial.Ice && block.Code.Path != "glacierice");
         }
     }
@@ -68,7 +67,6 @@ public class SepiaColors {
             _ => "unknown"
         };
     }
-
     public void Dispose() {
         ColorsByCode.Clear();
         HexColorsByCode.Clear();

@@ -24,6 +24,7 @@ public class SepiaColors {
         { "unknown", "#FF1493" }
     };
     public Vintagestory.API.Datastructures.OrderedDictionary<string, uint> ColorsByCode { get; } = [];
+
     public SepiaColors(LiveMap server) {
         int max = server.Sapi.World.Blocks.Count;
         Block2Color = new byte[max + 1];
@@ -33,19 +34,21 @@ public class SepiaColors {
             ColorsByCode[val.Key] = (uint)SKColor.Parse(val.Value);
         }
 
+        //TODO: something in here is causing my sepia rendering to now work as intended I think
         foreach (Block block in server.Sapi.World.Blocks) {
             if (block.BlockMaterial == EnumBlockMaterial.Snow && block.Code.Path.Contains("snowblock")) {
-                Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey("glacier");
+                Block2Color[block.BlockId] = (byte)ColorsByCode.TryGetValue("glacier");
                 BlockIsWater[block.BlockId] = false;
                 continue;
             }
 
             string colorCode = "land";
             if (block.Attributes != null) {
-                colorCode = block.Attributes["mapColorCode"].AsString() ?? GetDefaultMapColorCode(block.BlockMaterial);
+                colorCode = block.Attributes["mapColorCode"].AsString() ??
+                    GetDefaultMapColorCode(block.BlockMaterial);
             }
 
-            Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey(colorCode);
+            Block2Color[block.BlockId] = (byte)ColorsByCode.TryGetValue(colorCode);
             BlockIsWater[block.BlockId] = block.BlockMaterial == EnumBlockMaterial.Water || (block.BlockMaterial == EnumBlockMaterial.Ice && block.Code.Path != "glacierice");
         }
     }

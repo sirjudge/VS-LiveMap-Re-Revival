@@ -165,9 +165,6 @@ public sealed class LiveMapClient {
 
         return colormap;
     }
-
-    //TODO: said we could remove instance
-    // public static bool PreYearRel(IGameCalendar instance, ref float result) {
     public static bool PreYearRel(ref float result) {
         if (_overrideMonth == null) {
             return true;

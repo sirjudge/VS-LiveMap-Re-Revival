@@ -1,3 +1,4 @@
+using LiveMap.Util;
 using SkiaSharp;
 using Vintagestory.API.Common;
 
@@ -9,6 +10,7 @@ namespace LiveMap.Data;
 public class SepiaColors {
     public byte[] Block2Color { get; private set; }
     public bool[] BlockIsWater { get; private set; }
+
     public Vintagestory.API.Datastructures.OrderedDictionary<string, string> HexColorsByCode { get; } = new() {
         { "ink", "#483018" },
         { "settlement", "#856844" },
@@ -17,6 +19,7 @@ public class SepiaColors {
         { "desert", "#C4A468" },
         { "forest", "#98844C" },
         { "road", "#805030" },
+        //TODO: did plant change?
         { "plant", "#808650" },
         { "lake", "#CCC890" },
         { "ocean", "#CCC890" },
@@ -39,6 +42,7 @@ public class SepiaColors {
             if (block.BlockMaterial == EnumBlockMaterial.Snow && block.Code.Path.Contains("snowblock")) {
                 Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey("glacier");
                 BlockIsWater[block.BlockId] = false;
+                Logger.Debug($"block {block.Id} is a snow");
                 continue;
             }
 

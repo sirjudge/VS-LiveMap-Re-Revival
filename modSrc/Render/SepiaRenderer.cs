@@ -14,13 +14,15 @@ public class SepiaRenderer() : Renderer("sepia") {
 
         if (index < LiveMap.Api.SepiaColors.ColorsByCode.Count) {
             uint colorCodeToReturn = LiveMap.Api.SepiaColors.ColorsByCode.GetValueAtIndex(index);
-            Logger.Debug($"Returning the colorCode:{colorCodeToReturn}");
+            Logger.Debug($"Returning the colorCode:{colorCodeToReturn} for {index}");
         }
 
         Logger.Debug($"yolo the ocean again when indexing sepia color:{index}");
         return GetColor("ocean");
     }
 
+    //TODO: For some reason trees and such don't appear to be lining up
+    // need to fix that next
     public override void ProcessBlockData(int regionX, int regionZ, BlockData blockData) {
         if (TileImage == null) {
             return;

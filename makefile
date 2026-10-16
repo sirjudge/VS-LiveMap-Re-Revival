@@ -7,10 +7,10 @@ clean:
 	rm -f ./modSrc/bin/LiveMap*
 
 build-prod:
-	./build.sh -c release
+	./build/build.sh -c release
 
 build-debug:
-	./build.sh -c debug
+	./build/build.sh -c debug
 
 docs:
 	./docGen.shiv
@@ -18,3 +18,7 @@ docs:
 run-server:
 	./build.sh -c release
 	./runServer.sh
+
+tests:
+	npm test --prefix web/
+	dotnet test ./modSrc/

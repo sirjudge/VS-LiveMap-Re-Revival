@@ -3,7 +3,7 @@ using SkiaSharp;
 namespace LiveMap.Tile;
 
 public class TileType {
-    public static readonly OrderedDictionary<string, TileType> Types = [];
+    public static readonly Vintagestory.API.Datastructures.OrderedDictionary<string, TileType> Types = [];
 
     public static readonly TileType Png = Register(new TileType("png", SKEncodedImageFormat.Png));
     public static readonly TileType Webp = Register(new TileType("webp", SKEncodedImageFormat.Webp));

@@ -1,9 +1,9 @@
 {
   "type": "code",
   "name": "LiveMap",
-  "modid": "livemap",
+  "modid": "livemaprerevival",
   "version": "0.2.0",
-  "description": "LiveMap is a browser-based world map viewer for Vintage Story",
+  "description": "LiveMap is a browser-based world map viewer for Vintage Story and this mod is revival of the original revival effort of the original mod",
   "authors": [
     "BillyGalbreath",
     "mja00",

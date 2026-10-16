@@ -38,7 +38,6 @@ public unsafe class TileImage
         _hasChanges = false;
     }
 
-    //TODO: Think something with the setBlockColor is causing the water to be borked in the client map?
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetBlockColor(int blockX, int blockZ, uint argb, float yDiff)
     {

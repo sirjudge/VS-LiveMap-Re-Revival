@@ -2,7 +2,7 @@
 
 set -e
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/modSrc"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../modSrc"
 PROJECT_FILE="$PROJECT_ROOT/LiveMap.csproj"
 
 # Default values
@@ -130,6 +130,4 @@ mv "$RELEASE_DIR/LiveMap.zip" "$RELEASE_DIR/$NEW_ZIP_NAME"
 echo ""
 success "Build completed successfully!"
 
-# TODO: Eventually make this a flag but just hard code it always run for now
-rm -f /home/nico/.config/VintagestoryData/Mods/LiveMap.zip
 cp "$RELEASE_DIR/$NEW_ZIP_NAME" /home/nico/.config/VintagestoryData/Mods/

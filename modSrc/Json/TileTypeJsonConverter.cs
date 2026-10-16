@@ -21,7 +21,7 @@ public class TileTypeJsonConverter : JsonConverter {
         string? str = JToken.Load(reader).ToObject<string>();
         return str is null ?
             null:
-            TileType.Types.GetValueOrDefault(str);
+            TileType.Types.TryGetValue(str);
     }
 
     public override bool CanConvert(Type type) => type.GetElementType() == typeof(string);

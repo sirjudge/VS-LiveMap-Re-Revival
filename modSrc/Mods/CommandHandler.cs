@@ -14,7 +14,7 @@ public class CommandHandler {
         _server = server;
 
         _chatCommand = server.Sapi.ChatCommands
-            .Create(server.ModId)
+            .Create("livemap")
             .WithDescription("command.description".ToLang())
             .RequiresPrivilege(Privilege.chat)
             .HandleWith(_ => "no-args-response".CommandSuccess(server.Config.Web.Url));

@@ -7,7 +7,6 @@ public class SepiaRenderer() : Renderer("sepia") {
     private static byte GetIndex(int id) => LiveMap.Api.SepiaColors.Block2Color[id];
     private static uint GetColor(string id) => LiveMap.Api.SepiaColors.ColorsByCode[id];
     private static uint GetColor(int index) {
-        // if (index <= 0) {
         if (index < 0) {
             Logger.Warn($"index is less than 0, cannot display color:{index}");
             GetColor("unknown");

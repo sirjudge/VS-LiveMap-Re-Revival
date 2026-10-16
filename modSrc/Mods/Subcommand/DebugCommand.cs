@@ -32,10 +32,3 @@ public class DebugStatusCommand(LiveMap server) : AbstractCommand(server, ["debu
         return debugStatus.CommandSuccess();
     }
 }
-// [solution/open] [LanguageServerProjectSystem] Completed (re)load of all projects in 00:00:01.2804339
-//
-//
-//
-// [textDocument/diagnostic] [.NET CLI Helper] Using dotnet executable configured on the PATH
-
-// [textDocument/diagnostic] [FileBasedProgramsProjectSystem] Restoring Canonical.csproj: Running dotnet restore on /tmp/roslyn-canonical-misc/f273d812-2d11-4183-aa9c-d1688f074f7b/Canonical.csproj

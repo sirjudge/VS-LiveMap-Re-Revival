@@ -37,7 +37,7 @@ public class SepiaColors {
         //TODO: something in here is causing my sepia rendering to now work as intended I think
         foreach (Block block in server.Sapi.World.Blocks) {
             if (block.BlockMaterial == EnumBlockMaterial.Snow && block.Code.Path.Contains("snowblock")) {
-                Block2Color[block.BlockId] = (byte)ColorsByCode.TryGetValue("glacier");
+                Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey("glacier");
                 BlockIsWater[block.BlockId] = false;
                 continue;
             }
@@ -48,7 +48,7 @@ public class SepiaColors {
                     GetDefaultMapColorCode(block.BlockMaterial);
             }
 
-            Block2Color[block.BlockId] = (byte)ColorsByCode.TryGetValue(colorCode);
+            Block2Color[block.BlockId] = (byte)ColorsByCode.IndexOfKey(colorCode);
             BlockIsWater[block.BlockId] = block.BlockMaterial == EnumBlockMaterial.Water || (block.BlockMaterial == EnumBlockMaterial.Ice && block.Code.Path != "glacierice");
         }
     }

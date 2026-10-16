@@ -1,5 +1,4 @@
 using LiveMap.Data;
-using LiveMap.Json;
 using Newtonsoft.Json;
 
 namespace LiveMap.Tests;
@@ -46,7 +45,7 @@ public class JsonConvertersTest {
     [Fact]
     public void ColorJsonConverter_DeserializeHexString_ShouldProduceColor() {
         // Arrange
-        string json = "{\"value\":\"#FF5733\"}";
+        const string json = "{\"value\":\"#FF5733\"}";
 
         // Act
         TestObject<Color?>? obj = JsonConvert.DeserializeObject<TestObject<Color?>>(json);
@@ -60,7 +59,7 @@ public class JsonConvertersTest {
     [Fact]
     public void ColorJsonConverter_DeserializeNull_ShouldProduceNull() {
         // Arrange
-        string json = "{\"value\":null}";
+        const string json = "{\"value\":null}";
 
         // Act
         TestObject<Color?>? obj = JsonConvert.DeserializeObject<TestObject<Color?>>(json);
@@ -103,7 +102,7 @@ public class JsonConvertersTest {
     [Fact]
     public void OpacityJsonConverter_DeserializeDouble_ShouldProduceOpacity() {
         // Arrange
-        string json = "{\"value\":0.8}";
+        const string json = "{\"value\":0.8}";
 
         // Act
         TestObject<Opacity?>? obj = JsonConvert.DeserializeObject<TestObject<Opacity?>>(json);
@@ -117,7 +116,7 @@ public class JsonConvertersTest {
     [Fact]
     public void OpacityJsonConverter_DeserializeNull_ShouldProduceNull() {
         // Arrange
-        string json = "{\"value\":null}";
+        const string json = "{\"value\":null}";
 
         // Act
         TestObject<Opacity?>? obj = JsonConvert.DeserializeObject<TestObject<Opacity?>>(json);

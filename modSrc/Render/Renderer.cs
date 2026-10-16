@@ -17,9 +17,7 @@ public abstract class Renderer(string id) : Keyed {
     /// <summary>
     ///     Initialize renderer with server context (called after registration)
     /// </summary>
-    public virtual void Initialize(LiveMap server) {
-        BlocksToIgnore = server.RenderTaskManager?.BlocksToIgnore;
-    }
+    public virtual void Initialize(LiveMap server) => BlocksToIgnore = server.RenderTaskManager?.BlocksToIgnore;
 
     public virtual void AllocateImage(int regionX, int regionZ) => TileImage = new TileImage(regionX, regionZ);
 

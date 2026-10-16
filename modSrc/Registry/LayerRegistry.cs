@@ -1,4 +1,3 @@
-using LiveMap.Layer;
 using LiveMap.Layer.BuiltIn;
 
 namespace LiveMap.Registry;

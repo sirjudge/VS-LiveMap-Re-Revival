@@ -145,13 +145,9 @@ public sealed class LiveMapClient {
                         baseColor = Color.Reverse((uint)_api.BlockTextureAtlas.GetAverageColor(block.TextureSubIdForBlockColor));
                         break;
                     case BlockPlant:
-                    {
                         Block? tallGrassBlock = _api.World.GetBlock(new AssetLocation("game:tallgrass-tall-free"));
-                        baseColor = tallGrassBlock is null?
-                            throw new ArgumentException("Expected tallgrass block to not be null but was null instead"):
-                            Color.Reverse((uint)tallGrassBlock.GetColor(_api, _overridePos));
+                        baseColor = Color.Reverse((uint)(tallGrassBlock?.GetColor(_api, _overridePos) ?? 0));
                         break;
-                    }
                     default:
                         baseColor = Color.Reverse((uint)block.GetColor(_api, _overridePos));
                         break;

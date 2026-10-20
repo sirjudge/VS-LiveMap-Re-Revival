@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")../" && pwd)"
 DOXYGEN_CONF="$PROJECT_ROOT/modSrc/doxygen.conf"
 DOCS_DIR="$PROJECT_ROOT/modSrc/doxygen.conf"
 

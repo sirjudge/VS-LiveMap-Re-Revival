@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 # 0.2.0 - 2026 - 10 -01
 ## Addition
 - Added dependency on `resolve-cwd` npm package to build time error. Not sure what had changed but seemed to be an issue with webpack not being able to find it without explicit addition of the package.
+- Added new `unkown` color to Sepia colorMap. This is the first step to an additional refactor to simplify how color styles and color themes can be applied to the base color map.
 ## Change/Fix
 - Update to .NET 10
 - Refactor file structure and namespaces to follow .NET styles + fix out of date shell script

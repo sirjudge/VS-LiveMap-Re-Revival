@@ -42,7 +42,7 @@ public sealed class ColormapChunkPacket : Packet {
     public int Month {
         get => _month;
         set {
-            if (value < 1 || value > 12) {
+            if (value is < 1 or > 12) {
                 return;
             }
 

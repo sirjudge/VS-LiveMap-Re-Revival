@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using HarmonyLib;
 using LiveMap.Data;
@@ -75,9 +74,7 @@ public sealed class LiveMapClient {
 
                             string json = colormap.Serialize();
                             ColormapPacket responsePacket = new ColormapPacket { RawColormap = json, Month = month }.Compress();
-                            ColormapChunkPacket[] chunks = responsePacket.ToChunks().ToArray();
-
-                            foreach (ColormapChunkPacket t in chunks) {
+                            foreach (ColormapChunkPacket t in responsePacket.ToChunks().ToArray()) {
                                 _channel.SendPacket(t);
                                 Thread.Sleep(10); // Throttle slightly
                             }
@@ -168,8 +165,7 @@ public sealed class LiveMapClient {
 
         return colormap;
     }
-
-    public static bool PreYearRel(IGameCalendar instance, ref float result) {
+    public static bool PreYearRel(ref float result) {
         if (_overrideMonth == null) {
             return true;
         }

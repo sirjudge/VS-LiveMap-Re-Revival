@@ -9,12 +9,11 @@ LiveMap, is a Google Maps-like map for Vintage Story that can be viewed in a bro
 
 **Additional Note:** At this point in time translations are broken. I'm aware of this and hope to fix in a future patch.
 ## Currently Broken Features or Important Notes
-- Slow? It's obviously built with threading in mind but golly I think they be threading slow without using new .net features. This was ported from .net 8 and already seemed to have a heavy hand in optimizing with threads but in a seemingly verbose way. Rendering takes a lot of resources so obviously not a smart idea to go nuts. I think there's a fine tuning here if we refuse to believe this is as fast as it goes.
-- Security Audit. This needs to be done decently soonish. I can't really audit until I'm done with fixes and updates which will just take some more time.
+- Security Audit. This needs to be done decently soonish. I can't really audit until I'm done with fixes and updates which will just take some more time. In theory from what I've read so far, it's spawning a standalone endpoint that uses protobuf and protobuf accessories for serializing data between front and back. While this should protect against malicious payloads it's also a potential opening. Some kind of scan + manual review combo should be done to mitigate any potential pitfalls from those who came before me or code that has since become a vulnerability.
 ## AI Policy
 The original version of this mod which was forked and rebuilt enough using AI was eventually hit with a disruption due to .NET updates and depreciated API calls. This is a revival to the original revival and was done so without AI directly writing to this codebase from this commit (INSERT COMMIT HERE LATER) onwards. LLMs can and will be used for consultation - As my good friend said "Let the pattern machine find the pattern" - but will not be allowed to directly write any code.
 
-I want this repo to remain free of generative AI written code from here forward. This refactor and all new additional logic will be artisanal hand written, just like ye' olden days as a reminder that they cannot come for human ingenuity.
+I want this repository to remain free of generative AI written code from here forward. This refactor and all new additional logic will be artisnal hand written, just like ye' olden days as a reminder that they cannot come for human ingenuity.
 ## Features
 * **Integrated Web Server**: Out-of-the-box web hosting for the map, with no external dependencies required.
 * **Real-time Updates**: The map updates automatically as players explore and modify the world.

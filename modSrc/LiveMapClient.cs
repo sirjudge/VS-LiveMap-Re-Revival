@@ -76,6 +76,9 @@ public sealed class LiveMapClient {
                             ColormapPacket responsePacket = new ColormapPacket { RawColormap = json, Month = month }.Compress();
                             foreach (ColormapChunkPacket t in responsePacket.ToChunks().ToArray()) {
                                 _channel.SendPacket(t);
+                                //TODO: Need to re-evaluate this. I don't like
+                                //getting throttled without being able to configure
+                                // let me burn my cycles
                                 Thread.Sleep(10); // Throttle slightly
                             }
 
